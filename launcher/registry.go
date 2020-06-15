@@ -11,8 +11,15 @@ import (
 
 var AppRegistry = map[string]*AppDef{}
 
-func RegisterApp(appDef *AppDef) {
+func RegisteredApps(appDef *AppDef) {
 	AppRegistry[appDef.ID] = appDef
+}
+
+func GetRegisteredApp() (out []string) {
+	for appID := range AppRegistry {
+		out = append(out, string(appID))
+	}
+	return out
 }
 
 func GetMetricAppMeta() map[string]*metrics.AppMeta {

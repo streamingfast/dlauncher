@@ -46,6 +46,7 @@ func UserLog() *zapbox.CLILogger {
 }
 
 func SetupLogger() {
+
 	dataDir := viper.GetString("global-data-dir")
 	verbosity := viper.GetInt("global-verbose")
 	logformat := viper.GetString("global-log-format")
@@ -88,7 +89,7 @@ func SetupLogger() {
 
 	// The userLog are wrapped, they need to be re-configured with newly set base instance to work correctly
 	userLog.ReconfigureReference()
-	UserLog().ReconfigureReference()
+	//UserLog().ReconfigureReference()
 
 	// Hijack standard Golang `log` and redirect it to our common logger
 	zap.RedirectStdLogAt(commonLogger, zap.DebugLevel)
