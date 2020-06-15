@@ -11,11 +11,11 @@ import (
 
 var AppRegistry = map[string]*AppDef{}
 
-func RegisteredApps(appDef *AppDef) {
+func RegisterApp(appDef *AppDef) {
 	AppRegistry[appDef.ID] = appDef
 }
 
-func GetRegisteredApp() (out []string) {
+func GetRegisteredApps() (out []string) {
 	for appID := range AppRegistry {
 		out = append(out, string(appID))
 	}
