@@ -21,6 +21,7 @@ import (
 	"github.com/dfuse-io/dfuse-box/metrics"
 	dmeshCli "github.com/dfuse-io/dmesh/client"
 	"github.com/dfuse-io/shutter"
+	"go.uber.org/zap"
 )
 
 type Config struct {
@@ -44,6 +45,7 @@ type App struct {
 }
 
 func New(config *Config, modules *Modules) *App {
+	zlog.Info("new dashboard app", zap.Reflect("config", config))
 	return &App{
 		Shutter: shutter.New(),
 		config:  config,

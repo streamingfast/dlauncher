@@ -12,12 +12,13 @@ import (
 var AppRegistry = map[string]*AppDef{}
 
 func RegisterApp(appDef *AppDef) {
+	userLog.Debug("registering app", zap.String("app_id", appDef.ID))
 	AppRegistry[appDef.ID] = appDef
 }
 
 func GetRegisteredApps() (out []string) {
 	for appID := range AppRegistry {
-		out = append(out, string(appID))
+		out = append(out, appID)
 	}
 	return out
 }
