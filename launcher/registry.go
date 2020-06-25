@@ -56,20 +56,19 @@ func RegisterFlags(cmd *cobra.Command) error {
 	return nil
 }
 
-func ParseAppsFromArgs(args []string) (apps []string) {
+func ParseAppsFromArgs(args []string, runByDefault func(string) bool) (apps []string) {
 	if len(args) == 0 {
-		return ParseAppsFromArgs([]string{"all"})
+		return ParseAppsFromArgs([]string{"all"}, runByDefault)
 	}
 
 	for _, arg := range args {
 		chunks := strings.Split(arg, ",")
 		for _, app := range chunks {
 			app = strings.TrimSpace(app)
-
 			if app == "all" {
 				for app := range AppRegistry {
-					if app == "search-forkresolver" {
-						continue // keep this until we fix search-forkresolver here
+					if !runByDefault(app) {
+						continue
 					}
 					apps = append(apps, app)
 				}

@@ -33,15 +33,25 @@ func TestParseFromArgs(t *testing.T) {
 			input:  []string{" app1, app2"},
 			expect: []string{"app1", "app2"},
 		},
+		{
+			input:  []string{"app2", "appnodefault"},
+			expect: []string{"app2", "appnodefault"},
+		},
 	}
 
 	RegisterApp(&AppDef{ID: "app1"})
 	RegisterApp(&AppDef{ID: "app2"})
 	RegisterApp(&AppDef{ID: "app3"})
+	RegisterApp(&AppDef{ID: "appnodefault"})
 
 	for idx, test := range tests {
 		t.Run(fmt.Sprintf("%d", idx), func(t *testing.T) {
-			res := ParseAppsFromArgs(test.input)
+			res := ParseAppsFromArgs(test.input, func(app string) bool {
+				if app == "appnodefault" {
+					return false
+				}
+				return true
+			})
 			assert.Equal(t, test.expect, res)
 		})
 	}
