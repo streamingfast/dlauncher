@@ -22,24 +22,24 @@ import { Paths } from "./paths";
 import { HomePage } from "../../pages/home";
 import { MockPage } from "../../pages/mock";
 import { GrapiQLPage } from "../../pages/graphiql";
+import { Helmet } from "react-helmet";
+import { useConfig } from "../../context/config";
+import { ThemeProvider } from "emotion-theming";
 
 const RoutesBase: React.FC<RouteComponentProps> = () => {
-  // FIXME: Commented for now
-  // const appsList = useAppsList();
-  // const routesToComponent = (appName: string) => <TemplatePage appId={appName} />;
-
-  // {appsList?.map((app) => {
-  //   const { id } = app;
-  //   return <Route key={`app-page-${id}`} exact={true} path={`/${id}`} render={() => routesToComponent(id)} />;
-  // })}
-
+  const { title } = useConfig()
   return (
-    <Switch>
-      <Route exact={true} path={Paths.home} component={HomePage} />
-      <Route exact={true} path={Paths.graphiql} component={GrapiQLPage} />
-      <Route exact={true} path={Paths.mock} component={MockPage} />
-      <Redirect to="/" />
-    </Switch>
+    <>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
+      <Switch>
+        <Route exact={true} path={Paths.home} component={HomePage} />
+        <Route exact={true} path={Paths.graphiql} component={GrapiQLPage} />
+        <Route exact={true} path={Paths.mock} component={MockPage} />
+        <Redirect to="/" />
+      </Switch>
+    </>
   );
 };
 export const Routes = withRouter(RoutesBase);

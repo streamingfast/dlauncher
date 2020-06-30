@@ -29,6 +29,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Cell } from "../../atoms/grid";
 import { Link } from "react-router-dom";
 import { Paths } from "../routes/paths";
+import { useConfig } from "../../context/config";
 // import { useAppsList } from '../../context/apps-list';
 
 const IconWrapper = styled(Cell)`
@@ -82,6 +83,7 @@ const MenuWrapper = styled(Cell)`
 `;
 
 export const SideMenu: React.FC = () => {
+  const { blockExplorerName } = useConfig()
   return (
     <MenuWrapper>
       <Menu style={{ width: "230px" }} defaultSelectedKeys={["0"]} defaultOpenKeys={["apps"]} mode="inline">
@@ -107,7 +109,7 @@ export const SideMenu: React.FC = () => {
             <IconWrapper>
               <FontAwesomeIcon icon={faSearch} />
             </IconWrapper>
-            <span>eosq</span>
+            <span>{blockExplorerName}</span>
           </a>
         </Menu.Item>
       </Menu>

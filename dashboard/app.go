@@ -25,9 +25,12 @@ import (
 )
 
 type Config struct {
-	EosNodeManagerAPIAddr string
-	GRPCListenAddr        string
-	HTTPListenAddr        string
+	HTTPListenAddr     string
+	GRPCListenAddr     string
+	NodeManagerAPIAddr string
+	// Dashboard configuration payload
+	Title             string
+	BlockExplorerName string
 }
 
 type Modules struct {

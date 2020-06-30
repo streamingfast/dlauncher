@@ -17,7 +17,7 @@
 import React, {useState} from 'react';
 import { Line } from 'react-chartjs-2';
 import { appMetric } from '../../services/data-providers/metrics';
-import { METRIC_CONFIG, MAX_GRAPH_DRIFT } from '../../utils/constants';
+import { MAX_GRAPH_DRIFT } from '../../utils/constants';
 import { getAppColor } from '../../theme/colors';
 import { Button } from 'antd'
 import { AreaChartOutlined } from '@ant-design/icons';
@@ -89,8 +89,7 @@ const chartOptions =  (isLogarithmic: boolean): any =>  {
 const cleanData = (appMetrics: appMetric[]): any[] => {
   const datasets: any[] = [];
   appMetrics.forEach(function(appMetric) {
-    const metricConfig = METRIC_CONFIG[appMetric.id];
-    if (metricConfig && metricConfig.headBlockDrift) {
+    if (appMetric.headBlockDrift.length > 0) {
       const filteredHeadBlockDrifts = appMetric.headBlockDrift.filter(
         value => value.value < MAX_GRAPH_DRIFT
       );
@@ -108,6 +107,7 @@ const cleanData = (appMetrics: appMetric[]): any[] => {
         borderWidth: 1
       });
     }
+
   });
   return datasets;
 };

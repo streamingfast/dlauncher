@@ -94,8 +94,18 @@ export type appInfo = {
   status?: string;
   drift?: number;
   headBlockNumber?: number;
-  metricConfig?: MetricConfig;
 };
+
+
+const shouldDisplayDrift = (drift: number) => {
+  return true
+}
+
+
+const shouldDisplayHeadBlockNumber = (headBlockNumber: number) => {
+  return true
+}
+
 
 export const WidgetApp: React.FC<{
   onNavigate?: () => void;
@@ -109,7 +119,6 @@ export const WidgetApp: React.FC<{
       status,
       drift,
       headBlockNumber,
-      metricConfig
     }
   } = props;
 
@@ -131,13 +140,13 @@ export const WidgetApp: React.FC<{
       </WidgetTitleWrapper>
       <DescriptionWrapper>{description}</DescriptionWrapper>
       <Row gutter={[1, 0]} justify='space-between'>
-        {metricConfig && metricConfig.headBlockDrift && (
+        {drift && shouldDisplayDrift(drift) && (
           <Col className='gutter-row'>
             <MetricLabel>drift</MetricLabel>
             <MetricData>{driftToDisplay}</MetricData>
           </Col>
         )}
-        {metricConfig && metricConfig.headBlockNumber && (
+        {headBlockNumber && shouldDisplayHeadBlockNumber(headBlockNumber) && (
           <Col
             className='gutter-row'
             style={{ float: 'right', textAlign: 'right' }}

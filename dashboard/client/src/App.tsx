@@ -24,20 +24,23 @@ import { ThemeProvider } from 'emotion-theming';
 import { AppsListProvider } from './context/apps-list';
 import { MetricsProvider } from './context/metrics';
 import { StatusProvider } from './context/status';
+import ConfigProvider from "./context/config";
 
 function App() {
   return (
-    <AppsListProvider>
-      <StatusProvider>
-        <MetricsProvider>
-          <ThemeProvider theme={theme}>
-            <Router history={history}>
-              <Routes />
-            </Router>
-          </ThemeProvider>
-        </MetricsProvider>
-      </StatusProvider>
-    </AppsListProvider>
+    <ConfigProvider>
+      <AppsListProvider>
+        <StatusProvider>
+          <MetricsProvider>
+            <ThemeProvider theme={theme}>
+              <Router history={history}>
+                <Routes />
+              </Router>
+            </ThemeProvider>
+          </MetricsProvider>
+        </StatusProvider>
+      </AppsListProvider>
+    </ConfigProvider>
   );
 }
 

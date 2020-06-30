@@ -15,8 +15,11 @@
 package dashboard
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"html/template"
 	"net"
 	"net/http"
 	"sort"
@@ -48,16 +51,19 @@ type server struct {
 	managerController *launcher.Controller
 	metricsManager    *metrics.Manager
 	box               *rice.HTTPBox
+	indexData         []byte
 }
 
 func newServer(config *Config, modules *Modules, metricsManager *metrics.Manager) *server {
+	box := rice.MustFindBox("dashboard-build").HTTPBox()
 	return &server{
 		Shutter:           shutter.New(),
 		config:            config,
 		modules:           modules,
-		managerController: launcher.NewController(config.EosNodeManagerAPIAddr),
+		managerController: launcher.NewController(config.NodeManagerAPIAddr),
 		metricsManager:    metricsManager,
-		box:               rice.MustFindBox("dashboard-build").HTTPBox(),
+		box:               box,
+		indexData:         mustGetTemplatedIndex(config, box),
 	}
 }
 
@@ -290,4 +296,33 @@ func (s *server) StopApp(context.Context, *pbdashboard.StopAppRequest) (*pbdashb
 func timeToProtoTimestamp(t *time.Time) *tspb.Timestamp {
 	out, _ := ptypes.TimestampProto(*t)
 	return out
+}
+
+func mustGetTemplatedIndex(config *Config, box *rice.HTTPBox) []byte {
+	indexContent, err := box.Bytes("index.html")
+	if err != nil {
+		panic(fmt.Errorf("failed to get index from rice box: %w", err))
+	}
+
+	indexConfig := map[string]interface{}{
+		"title":             config.Title,
+		"blockExplorerName": config.BlockExplorerName,
+	}
+
+	tpl, err := template.New("index.html").Funcs(template.FuncMap{
+		"json": func(v interface{}) (template.JS, error) {
+			cnt, err := json.Marshal(v)
+			return template.JS(cnt), err
+		},
+	}).Delims("--==", "==--").Parse(string(indexContent))
+	if err != nil {
+		panic(fmt.Errorf("failed to parse template: %w", err))
+	}
+
+	buf := &bytes.Buffer{}
+	if err := tpl.Execute(buf, indexConfig); err != nil {
+		panic(fmt.Errorf("failed to exec template: %w", err))
+	}
+
+	return buf.Bytes()
 }

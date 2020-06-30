@@ -29,7 +29,7 @@ import { useStatus } from '../context/status';
 import { appMetric } from '../services/data-providers/metrics';
 import { AppStatusDisplay } from '../services/data-providers/status';
 import { getAppColor } from '../theme/colors';
-import { METRIC_CONFIG } from '../utils/constants';
+import { useConfig } from "../context/config";
 
 const renderAppWidgets = (
   appsList: AppInfoToDisplay[] | null,
@@ -41,7 +41,6 @@ const renderAppWidgets = (
     const appStatus = appsStatus?.filter(a => a.name === app.id)[0];
     const appDrift = appMetric?.headBlockDrift.slice(-1)[0]?.value;
     const appHeadBlockNumber = appMetric?.headBlockNumber;
-    const appMetricConfig = METRIC_CONFIG[app.id];
     const info: appInfo = {
       color: getAppColor(app.id),
       title: app.title.toUpperCase(),
@@ -49,7 +48,6 @@ const renderAppWidgets = (
       status: appStatus?.status,
       drift: appDrift,
       headBlockNumber: appHeadBlockNumber,
-      metricConfig: appMetricConfig
     };
     return (
       <Col className='gutter-row' span={8} key={`col-${app.id}-graph`}>
@@ -61,12 +59,14 @@ const renderAppWidgets = (
   });
 
 const BaseHomePage: React.FC = () => {
+  const { title, blockExplorerName } = useConfig()
   const appsList = useAppsList();
   const appsStatus = useStatus();
   const appMetrics = useMetrics();
   return (
     <>
       <Row gutter={[16, 16]}>
+        <h1>{blockExplorerName}</h1>
         <Col className='gutter-row' span={24} key={'col-drif-graph'}>
           <WidgetBox>
             <WidgetTitle

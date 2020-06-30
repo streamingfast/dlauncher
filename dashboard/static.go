@@ -48,21 +48,8 @@ func (s *server) dashboardStaticHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (s *server) serveIndexHTML(w http.ResponseWriter, r *http.Request) {
-	reader, err := s.box.Open("index.html")
-	if err != nil {
-		zlog.Error("unable to serve dashboasrd static asset", zap.Error(err))
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("unable to read asset"))
-		return
-	}
+	zlog.Debug("serving templated index.html'")
 
-	stat, err := reader.Stat()
-	if err != nil {
-		zlog.Warn("cannot stat index.html file, serving without a MIME type")
-		io.Copy(w, reader)
-	}
-
-	defer reader.Close()
-
-	http.ServeContent(w, r, "index.html", stat.ModTime(), reader)
+	w.Header().Set("Content-Type", "text/html")
+	w.Write(s.indexData)
 }
