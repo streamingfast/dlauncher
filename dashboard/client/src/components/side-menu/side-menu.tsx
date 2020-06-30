@@ -22,6 +22,7 @@ import {
   // faThLarge,
   faTools,
   // faCog,
+  faNetworkWired,
   faHome,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
@@ -103,6 +104,15 @@ export const SideMenu: React.FC = () => {
             <span>GRAPHiQL</span>
           </Link>
         </Menu.Item>
+        <Menu.Item key="dmesh">
+          <Link to={Paths.dmesh}>
+            <IconWrapper>
+              <FontAwesomeIcon icon={faNetworkWired} />
+            </IconWrapper>
+            <span>dmesh</span>
+          </Link>
+        </Menu.Item>
+
         <Menu.Item key="eosqElese">
           {/* TODO: Must come from some config provided by the server */}
           <a href="http://localhost:8080" target="_blank" rel="noopener noreferrer">

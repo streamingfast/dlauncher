@@ -19,10 +19,12 @@ import { compile } from 'path-to-regexp';
 export const Paths = {
   home: '/',
   graphiql: '/grapher',
-  mock: '/mock'
+  mock: '/mock',
+  dmesh: '/dmesh'
 };
 
 export const Links = {
   home: compile(Paths.home),
-  mock: compile(Paths.mock)
+  mock: compile(Paths.mock),
+  dmesh: compile(Paths.mock),
 };

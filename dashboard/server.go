@@ -133,6 +133,12 @@ func (s *server) Dmesh(ctx context.Context, req *pbdashboard.DmeshRequest) (*pbd
 	out := &pbdashboard.DmeshResponse{
 		Clients: []*pbdashboard.DmeshClient{},
 	}
+	service := fmt.Sprintf("/%s/search", s.config.DmeshServiceVersion)
+	err := s.modules.DmeshClient.Start(ctx, []string{service})
+	if err != nil {
+		return nil, fmt.Errorf("unable to start dmesh client: %w", err)
+	}
+
 	searchPeers := s.modules.DmeshClient.Peers()
 	sort.Slice(searchPeers, func(i, j int) bool {
 		return searchPeers[i].TierLevel < searchPeers[j].TierLevel

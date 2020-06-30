@@ -25,9 +25,10 @@ import (
 )
 
 type Config struct {
-	HTTPListenAddr     string
-	GRPCListenAddr     string
-	NodeManagerAPIAddr string
+	HTTPListenAddr      string
+	GRPCListenAddr      string
+	NodeManagerAPIAddr  string
+	DmeshServiceVersion string
 	// Dashboard configuration payload
 	Title             string
 	BlockExplorerName string

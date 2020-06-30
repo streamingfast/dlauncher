@@ -24,7 +24,7 @@ import { MockPage } from "../../pages/mock";
 import { GrapiQLPage } from "../../pages/graphiql";
 import { Helmet } from "react-helmet";
 import { useConfig } from "../../context/config";
-import { ThemeProvider } from "emotion-theming";
+import { DmeshPage } from "../../pages/dmesh";
 
 const RoutesBase: React.FC<RouteComponentProps> = () => {
   const { title } = useConfig()
@@ -37,6 +37,7 @@ const RoutesBase: React.FC<RouteComponentProps> = () => {
         <Route exact={true} path={Paths.home} component={HomePage} />
         <Route exact={true} path={Paths.graphiql} component={GrapiQLPage} />
         <Route exact={true} path={Paths.mock} component={MockPage} />
+        <Route exact={true} path={Paths.dmesh} component={DmeshPage} />
         <Redirect to="/" />
       </Switch>
     </>

@@ -15,22 +15,25 @@
  */
 
 import { DashboardClient, ServiceError } from '../../pb/dashboard_pb_service';
-import { AppsListRequest } from '../../pb/dashboard_pb';
+import { DmeshRequest } from '../../pb/dashboard_pb';
 import * as PbDashboard from '../../pb/dashboard_pb';
+
+export interface Peer extends PbDashboard.DmeshClient.AsObject {
+}
 
 const client = new DashboardClient(
   process.env.REACT_APP_DASHBOARD_GRPC_WEB_URL || 'http://localhost:8081/api'
 );
 
-export const getAppsList = async (): Promise<PbDashboard.AppsListResponse.AsObject | null> => {
-  const request = new AppsListRequest();
-  const res = await new Promise<PbDashboard.AppsListResponse.AsObject | null>(
+export const getDmesh = async (): Promise<PbDashboard.DmeshResponse.AsObject | null> => {
+  const request = new DmeshRequest();
+  const res = await new Promise<PbDashboard.DmeshResponse.AsObject | null>(
     (resolve, reject) => {
-      client.appsList(
+      client.dmesh(
         request,
         (
           err: ServiceError | null,
-          response: PbDashboard.AppsListResponse | null
+          response: PbDashboard.DmeshResponse | null
         ) => {
           if (err || !response) {
             reject(err);
@@ -43,8 +46,3 @@ export const getAppsList = async (): Promise<PbDashboard.AppsListResponse.AsObje
   return res;
 };
 
-export const tryGetAppsList = async () => {
-  const res = await getAppsList();
-  if (!res || !res.appsList || res.appsList.length <= 0)
-    throw new Error('apps list empty');
-};

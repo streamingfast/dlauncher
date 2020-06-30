@@ -6,7 +6,6 @@ export const retryFunc = async (func: Function, waitTime: number = 2000) => {
   do {
     try {
       await func();
-      console.log(`calling function - ${func.name} succeeded`);
       keepTrying = false;
     } catch (error) {
       console.log(
