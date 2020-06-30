@@ -59,14 +59,12 @@ const renderAppWidgets = (
   });
 
 const BaseHomePage: React.FC = () => {
-  const { title, blockExplorerName } = useConfig()
   const appsList = useAppsList();
   const appsStatus = useStatus();
   const appMetrics = useMetrics();
   return (
     <>
       <Row gutter={[16, 16]}>
-        <h1>{blockExplorerName}</h1>
         <Col className='gutter-row' span={24} key={'col-drif-graph'}>
           <WidgetBox>
             <WidgetTitle

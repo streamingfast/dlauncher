@@ -18,15 +18,14 @@ import React from 'react';
 import { Row, Col } from 'antd';
 import { WidgetMetricItem } from './header-metric-item';
 import { useMetrics } from '../../context/metrics';
-import {
-  MINDREADER_APP_ID
-} from '../../utils/constants';
 import {BlockNumberWrapper} from "./block-number";
+import { useConfig } from "../../context/config";
 
 export const HeaderMetrics = () => {
   const appMetrics = useMetrics();
+  const { headBlockNumberApp } = useConfig();
   const managerAppIndex = appMetrics?.findIndex(
-    metric => metric.id === MINDREADER_APP_ID
+    metric => metric.id === headBlockNumberApp
   );
 
   let managerHeadBlockNumber: (number|undefined) = undefined;

@@ -4,6 +4,7 @@ const windowTS = window as any
 export interface ConfigContextType {
   title: string
   blockExplorerName: string
+  headBlockNumberApp: string
 }
 
 export const ConfigContext = createContext<ConfigContextType>(null!)
@@ -12,9 +13,10 @@ export const ConfigContext = createContext<ConfigContextType>(null!)
 export default function ConfigProvider(props: React.PropsWithChildren<{}>) {
   const title = (windowTS.TopLevelConfig ? windowTS.TopLevelConfig.title  : "dfuse dashboard")
   const blockExplorerName = (windowTS.TopLevelConfig ? windowTS.TopLevelConfig.blockExplorerName  : "explorer")
+  const headBlockNumberApp = (windowTS.TopLevelConfig ? windowTS.TopLevelConfig.headBlockNumberApp  : "mindreader-node")
 
   return (
-    <ConfigContext.Provider value={{title, blockExplorerName}}>
+    <ConfigContext.Provider value={{title, blockExplorerName, headBlockNumberApp}}>
       {props.children}
     </ConfigContext.Provider>
   )

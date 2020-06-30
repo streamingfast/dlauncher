@@ -311,8 +311,9 @@ func mustGetTemplatedIndex(config *Config, box *rice.HTTPBox) []byte {
 	}
 
 	indexConfig := map[string]interface{}{
-		"title":             config.Title,
-		"blockExplorerName": config.BlockExplorerName,
+		"title":              config.Title,
+		"blockExplorerName":  config.BlockExplorerName,
+		"headBlockNumberApp": config.HeadBlockNumberApp,
 	}
 
 	tpl, err := template.New("index.html").Funcs(template.FuncMap{

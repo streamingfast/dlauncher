@@ -25,7 +25,7 @@ import { BlockNumberWrapper } from './block-number';
 import { Col, Row } from 'antd';
 import { colors } from '../../theme/colors';
 import { durationToHumanBeta } from '../../utils/time';
-import { MetricConfig, INFINITE_DRIFT_THRESHOLD } from '../../utils/constants';
+import { INFINITE_DRIFT_THRESHOLD } from '../../utils/constants';
 
 const WidgetAppStyled = styled(Cell)`
   display: flex;

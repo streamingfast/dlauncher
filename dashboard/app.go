@@ -30,8 +30,9 @@ type Config struct {
 	NodeManagerAPIAddr  string
 	DmeshServiceVersion string
 	// Dashboard configuration payload
-	Title             string
-	BlockExplorerName string
+	Title              string
+	BlockExplorerName  string
+	HeadBlockNumberApp string
 }
 
 type Modules struct {
