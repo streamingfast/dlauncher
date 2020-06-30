@@ -25,12 +25,12 @@ import (
 	"sort"
 	"time"
 
-	"github.com/dfuse-io/dfuse-box/launcher"
+	"github.com/dfuse-io/dlauncher/launcher"
 
 	rice "github.com/GeertJohan/go.rice"
-	dashboard "github.com/dfuse-io/dfuse-box/dashboard/pb"
-	pbdashboard "github.com/dfuse-io/dfuse-box/dashboard/pb"
-	"github.com/dfuse-io/dfuse-box/metrics"
+	dashboard "github.com/dfuse-io/dlauncher/dashboard/pb"
+	pbdashboard "github.com/dfuse-io/dlauncher/dashboard/pb"
+	"github.com/dfuse-io/dlauncher/metrics"
 	"github.com/dfuse-io/dgrpc"
 	"github.com/dfuse-io/shutter"
 	"github.com/golang/protobuf/ptypes"

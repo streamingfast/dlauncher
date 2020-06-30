@@ -22,7 +22,7 @@ import (
 	"sync"
 	"time"
 
-	pbdashboard "github.com/dfuse-io/dfuse-box/dashboard/pb"
+	pbdashboard "github.com/dfuse-io/dlauncher/dashboard/pb"
 	dto "github.com/prometheus/client_model/go"
 	"github.com/prometheus/prom2json"
 	"go.uber.org/zap"

@@ -1,4 +1,4 @@
-module github.com/dfuse-io/dfuse-box
+module github.com/dfuse-io/dlauncher
 
 go 1.14
 

@@ -4,7 +4,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/dfuse-io/dfuse-box/metrics"
+	"github.com/dfuse-io/dlauncher/metrics"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 )

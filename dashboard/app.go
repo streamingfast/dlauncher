@@ -17,8 +17,8 @@ package dashboard
 import (
 	"time"
 
-	"github.com/dfuse-io/dfuse-box/launcher"
-	"github.com/dfuse-io/dfuse-box/metrics"
+	"github.com/dfuse-io/dlauncher/launcher"
+	"github.com/dfuse-io/dlauncher/metrics"
 	dmeshCli "github.com/dfuse-io/dmesh/client"
 	"github.com/dfuse-io/shutter"
 	"go.uber.org/zap"

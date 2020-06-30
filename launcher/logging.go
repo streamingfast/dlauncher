@@ -25,7 +25,7 @@ import (
 	"sync"
 
 	"github.com/blendle/zapdriver"
-	zapbox "github.com/dfuse-io/dfuse-box/zap-box"
+	zapbox "github.com/dfuse-io/dlauncher/zap-box"
 	"github.com/dfuse-io/logging"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -38,7 +38,7 @@ var DfuseLoggingDef *LoggingDef
 var BstreamLoggingDef *LoggingDef
 
 func init() {
-	logging.Register("github.com/dfuse-io/dfuse-box/launcher", userLog.LoggerReference())
+	logging.Register("github.com/dfuse-io/dlauncher/launcher", userLog.LoggerReference())
 }
 
 func UserLog() *zapbox.CLILogger {
