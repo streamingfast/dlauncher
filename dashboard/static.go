@@ -28,6 +28,12 @@ func (s *server) dashboardStaticHandler(w http.ResponseWriter, r *http.Request) 
 		path = "/index.html"
 	}
 
+	if path == "/" || path == "/index.html" {
+		zlog.Debug("serving templated 'index.html'")
+		s.serveIndexHTML(w, r)
+		return
+	}
+
 	zlog.Debug("serving dashboard static asset", zap.String("path", path))
 	pathFile, err := s.box.Open(path)
 	if err != nil {
