@@ -112,8 +112,7 @@ export const SideMenu: React.FC = () => {
             <span>dmesh</span>
           </Link>
         </Menu.Item>
-
-        <Menu.Item key="eosqElese">
+        <Menu.Item key="eosq">
           {/* TODO: Must come from some config provided by the server */}
           <a href="http://localhost:8080" target="_blank" rel="noopener noreferrer">
             <IconWrapper>
