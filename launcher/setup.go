@@ -32,7 +32,7 @@ func init() {
 
 func Setup() {
 	SetupLogger()
-	setupTracing()
+	SetupTracing()
 
 	go dmetrics.Serve(":9102")
 

@@ -20,7 +20,7 @@ import (
 	"go.opencensus.io/trace"
 )
 
-func setupTracing() {
+func SetupTracing() {
 	err := dtracing.SetupTracing("dfuse", trace.ProbabilitySampler(1/8.0))
 	derr.Check("unable to setup tracing correctly", err)
 }
