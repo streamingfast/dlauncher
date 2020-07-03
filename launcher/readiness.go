@@ -38,12 +38,12 @@ func (s *subscription) Push(app *pbdashboard.AppInfo) {
 		return
 	}
 
-	userLog.Debug("pushing app readiness state to subscriber",
+	UserLog.Debug("pushing app readiness state to subscriber",
 		zap.Reflect("response", app),
 	)
 	if len(s.IncomingAppInfo) == cap(s.IncomingAppInfo) {
 		s.QuitOnce.Do(func() {
-			userLog.Debug("reach max buffer size for readiness stream, closing channel")
+			UserLog.Debug("reach max buffer size for readiness stream, closing channel")
 			close(s.IncomingAppInfo)
 			s.Closed = true
 		})

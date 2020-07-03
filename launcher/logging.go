@@ -27,48 +27,48 @@ import (
 	"github.com/blendle/zapdriver"
 	zapbox "github.com/dfuse-io/dlauncher/zap-box"
 	"github.com/dfuse-io/logging"
-	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-var userLog = zapbox.NewCLILogger(zap.NewNop())
-var CommongLoggingDef *LoggingDef
-var DfuseLoggingDef *LoggingDef
-var BstreamLoggingDef *LoggingDef
+var UserLog = zapbox.NewCLILogger(zap.NewNop())
+var zlog *zap.Logger
 
 func init() {
-	logging.Register("github.com/dfuse-io/dlauncher/launcher", userLog.LoggerReference())
+	logging.Register("github.com/dfuse-io/dlauncher/launcher", &zlog)
 }
 
-func UserLog() *zapbox.CLILogger {
-	return userLog
+type LoggingOptions struct {
+	WorkingDir    string // the folder where the data will be stored, in our case will be used to store the logger
+	Verbosity     int    // verbosity level
+	LogFormat     string // specifies the log format
+	LogToFile     bool   // specifies if we should store the logs on disk
+	LogListenAddr string // address that listens to change the logs
 }
 
-func SetupLogger() {
-
-	dataDir := viper.GetString("global-data-dir")
-	verbosity := viper.GetInt("global-verbose")
-	logformat := viper.GetString("global-log-format")
-	logToFile := viper.GetBool("global-log-to-file")
-	listenAddr := viper.GetString("global-log-level-switcher-listen-addr")
+func SetupLogger(opts *LoggingOptions) {
+	verbosity := opts.Verbosity
+	logformat := opts.LogFormat
 
 	// TODO: The logger expect that the dataDir already exists...
 
 	var logFileWriter zapcore.WriteSyncer
-	if logToFile {
-		logFileWriter = createLogFileWriter(dataDir)
+	if opts.LogToFile {
+		logFileWriter = createLogFileWriter(opts.WorkingDir)
 	}
 	logStdoutWriter := zapcore.Lock(os.Stdout)
 
-	commonLogger := createLogger("common", CommongLoggingDef, verbosity, logFileWriter, logStdoutWriter, logformat)
+	commonLogger := createLogger("common", []zapcore.Level{zap.WarnLevel, zap.WarnLevel, zap.InfoLevel, zap.DebugLevel}, verbosity, logFileWriter, logStdoutWriter, logformat)
 	logging.Set(commonLogger)
 
 	for _, appDef := range AppRegistry {
-		logging.Set(createLogger(appDef.ID, appDef.Logger, verbosity, logFileWriter, logStdoutWriter, logformat), appDef.Logger.Regex)
+		logging.Set(createLogger(appDef.ID, appDef.Logger.Levels, verbosity, logFileWriter, logStdoutWriter, logformat), appDef.Logger.Regex)
 	}
-	logging.Set(createLogger("dfuse", DfuseLoggingDef, verbosity, logFileWriter, logStdoutWriter, logformat), DfuseLoggingDef.Regex)
-	logging.Set(createLogger("bstream", BstreamLoggingDef, verbosity, logFileWriter, logStdoutWriter, logformat), BstreamLoggingDef.Regex)
+
+	logging.Set(createLogger("bstream", []zapcore.Level{zap.WarnLevel, zap.WarnLevel, zap.InfoLevel, zap.DebugLevel}, verbosity, logFileWriter, logStdoutWriter, logformat), "github.com/dfuse-io/bstream.*")
+
+	userLog := UserLog.LoggerReference()
+	*userLog = createLogger("dfuse", []zapcore.Level{zap.InfoLevel, zap.InfoLevel, zap.DebugLevel}, verbosity, logFileWriter, logStdoutWriter, logformat)
 
 	// Fine-grain customization
 	//
@@ -87,18 +87,14 @@ func SetupLogger() {
 		changeLoggersLevel(value, zap.DebugLevel)
 	}
 
-	// The userLog are wrapped, they need to be re-configured with newly set base instance to work correctly
-	userLog.ReconfigureReference()
-	//UserLog().ReconfigureReference()
-
 	// Hijack standard Golang `log` and redirect it to our common logger
 	zap.RedirectStdLogAt(commonLogger, zap.DebugLevel)
 
-	if listenAddr != "" {
+	if opts.LogListenAddr != "" {
 		go func() {
-			userLog.Debug("starting atomic level switcher", zap.String("listen_addr", listenAddr))
-			if err := http.ListenAndServe(listenAddr, http.HandlerFunc(handleHTTPLogChange)); err != nil {
-				userLog.Warn("failed starting atomic level switcher", zap.Error(err), zap.String("listen_addr", listenAddr))
+			UserLog.Debug("starting atomic level switcher", zap.String("listen_addr", opts.LogListenAddr))
+			if err := http.ListenAndServe(opts.LogListenAddr, http.HandlerFunc(handleHTTPLogChange)); err != nil {
+				UserLog.Warn("failed starting atomic level switcher", zap.Error(err), zap.String("listen_addr", opts.LogListenAddr))
 			}
 		}()
 	}
@@ -150,10 +146,10 @@ func handleHTTPLogChange(w http.ResponseWriter, r *http.Request) {
 var appToAtomicLevel = map[string]zap.AtomicLevel{}
 var appToAtomicLevelLock sync.Mutex
 
-func createLogger(appID string, loggingDef *LoggingDef, verbosity int, fileSyncer zapcore.WriteSyncer, consoleSyncer zapcore.WriteSyncer, format string) *zap.Logger {
+func createLogger(appID string, levels []zapcore.Level, verbosity int, fileSyncer zapcore.WriteSyncer, consoleSyncer zapcore.WriteSyncer, format string) *zap.Logger {
 
 	// It's ok for concurrent use here, we assume all logger are created in a single goroutine
-	appToAtomicLevel[appID] = zap.NewAtomicLevelAt(appLoggerLevel(loggingDef.Levels, verbosity))
+	appToAtomicLevel[appID] = zap.NewAtomicLevelAt(appLoggerLevel(levels, verbosity))
 	opts := []zap.Option{zap.AddCaller()}
 
 	var consoleCore zapcore.Core

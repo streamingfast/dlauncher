@@ -35,7 +35,7 @@ func NewController(nodeosCommandURL string) *Controller {
 
 func (c *Controller) StartNode() (string, error) {
 	url := fmt.Sprintf("http://localhost%s/v1/resume?sync=true", c.nodeosCommandListenAddr)
-	userLog.Debug("resuming node", zap.String("node_url", url))
+	UserLog.Debug("resuming node", zap.String("node_url", url))
 
 	body := bytes.NewBufferString("{}")
 	response, err := http.Post(url, "application/json", body)
@@ -54,7 +54,7 @@ func (c *Controller) StartNode() (string, error) {
 
 func (c *Controller) StopNode() (string, error) {
 	url := fmt.Sprintf("http://localhost%s/v1/maintenance?sync=true", c.nodeosCommandListenAddr)
-	userLog.Debug("pausing node", zap.String("node_url", url))
+	UserLog.Debug("pausing node", zap.String("node_url", url))
 
 	body := bytes.NewBufferString("{}")
 	response, err := http.Post(url, "application/json", body)
@@ -73,7 +73,7 @@ func (c *Controller) StopNode() (string, error) {
 
 func (c *Controller) NodeHealth() error {
 	url := fmt.Sprintf("http://localhost%s/v1/healthz", c.nodeosCommandListenAddr)
-	userLog.Debug("get node health", zap.String("node_url", url))
+	UserLog.Debug("get node health", zap.String("node_url", url))
 	_, err := http.Get(url)
 	if err != nil {
 		return err

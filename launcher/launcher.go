@@ -68,7 +68,7 @@ func (l *Launcher) Launch(appNames []string) error {
 		}
 
 		if appDef.InitFunc != nil {
-			userLog.Debug("initialize application", zap.String("app", appID))
+			UserLog.Debug("initialize application", zap.String("app", appID))
 			err := appDef.InitFunc(l.modules)
 			if err != nil {
 				return fmt.Errorf("unable to initialize app %q: %w", appID, err)
@@ -80,7 +80,7 @@ func (l *Launcher) Launch(appNames []string) error {
 		appDef := AppRegistry[appID]
 
 		l.StoreAndStreamAppStatus(appID, pbdashboard.AppStatus_CREATED)
-		userLog.Debug("creating application", zap.String("app", appID))
+		UserLog.Debug("creating application", zap.String("app", appID))
 		app, err := appDef.FactoryFunc(l.modules)
 		if err != nil {
 			return fmt.Errorf("unable to create app %q: %w", appID, err)
@@ -107,7 +107,7 @@ func (l *Launcher) Launch(appNames []string) error {
 				l.shutdownIfRecoveringFromPanic(appID, recover())
 			})()
 
-			userLog.Debug("launching app", zap.String("app", appID))
+			UserLog.Debug("launching app", zap.String("app", appID))
 			err := app.Run()
 			if err != nil {
 				l.shutdownDueToApp(appID, err)
@@ -171,9 +171,9 @@ func (l *Launcher) shutdownDueToApp(appID string, err error) {
 		l.firstShutdownAppID = appID
 
 		if err != nil {
-			userLog.FatalAppError(appID, err)
+			UserLog.FatalAppError(appID, err)
 		} else {
-			userLog.Printf("app %s triggered clean shutdown", appID)
+			UserLog.Printf("app %s triggered clean shutdown", appID)
 		}
 	})
 
@@ -240,39 +240,39 @@ func (l *Launcher) updateReady() (allReady bool) {
 			if readyableApp.IsReady() {
 
 				if l.GetAppStatus(appID) != pbdashboard.AppStatus_RUNNING {
-					userLog.Debug("app status switching to running", zap.String("app_id", appID))
+					UserLog.Debug("app status switching to running", zap.String("app_id", appID))
 					l.StoreAndStreamAppStatus(appID, pbdashboard.AppStatus_RUNNING)
 				}
 			} else {
 				allReady = false
 				if l.GetAppStatus(appID) != pbdashboard.AppStatus_WARNING {
-					userLog.Debug("app status switching to warning", zap.String("app_id", appID))
+					UserLog.Debug("app status switching to warning", zap.String("app_id", appID))
 					l.StoreAndStreamAppStatus(appID, pbdashboard.AppStatus_WARNING)
 				}
 			}
 		} else {
-			userLog.Debug("does not support readiness probe", zap.String("app_id", appID))
+			UserLog.Debug("does not support readiness probe", zap.String("app_id", appID))
 		}
 	}
 	return
 }
 
 func (l *Launcher) WaitForTermination() {
-	userLog.Printf("Waiting for all apps termination...")
+	UserLog.Printf("Waiting for all apps termination...")
 	now := time.Now()
 	for appID, app := range l.apps {
 	innerFor:
 		for {
 			select {
 			case <-app.Terminated():
-				userLog.Debug("App terminated", zap.String("app_id", appID))
+				UserLog.Debug("App terminated", zap.String("app_id", appID))
 				break innerFor
 			case <-time.After(1500 * time.Millisecond):
-				userLog.Printf("Still waiting for app %q ... %v", appID, time.Since(now).Round(100*time.Millisecond))
+				UserLog.Printf("Still waiting for app %q ... %v", appID, time.Since(now).Round(100*time.Millisecond))
 			}
 		}
 	}
-	userLog.Printf("All apps terminated gracefully")
+	UserLog.Printf("All apps terminated gracefully")
 }
 
 func (l *Launcher) SubscribeAppStatus() *subscription {
@@ -284,7 +284,7 @@ func (l *Launcher) SubscribeAppStatus() *subscription {
 
 	l.appStatusSubscriptions = append(l.appStatusSubscriptions, sub)
 
-	userLog.Debug("App status subscribed")
+	UserLog.Debug("App status subscribed")
 	return sub
 }
 

@@ -12,15 +12,8 @@ import (
 var AppRegistry = map[string]*AppDef{}
 
 func RegisterApp(appDef *AppDef) {
-	userLog.Debug("registering app", zap.String("app_id", appDef.ID))
+	UserLog.Debug("registering app", zap.String("app_id", appDef.ID))
 	AppRegistry[appDef.ID] = appDef
-}
-
-func GetRegisteredApps() (out []string) {
-	for appID := range AppRegistry {
-		out = append(out, appID)
-	}
-	return out
 }
 
 func GetMetricAppMeta() map[string]*metrics.AppMeta {
@@ -38,9 +31,9 @@ var RegisterCommonFlags func(cmd *cobra.Command) error
 
 func RegisterFlags(cmd *cobra.Command) error {
 	for _, appDef := range AppRegistry {
-		userLog.Debug("trying to register flags", zap.String("app_id", appDef.ID))
+		UserLog.Debug("trying to register flags", zap.String("app_id", appDef.ID))
 		if appDef.RegisterFlags != nil {
-			userLog.Debug("found non nil flags, registering", zap.String("app_id", appDef.ID))
+			UserLog.Debug("found non nil flags, registering", zap.String("app_id", appDef.ID))
 			err := appDef.RegisterFlags(cmd)
 			if err != nil {
 				return err
