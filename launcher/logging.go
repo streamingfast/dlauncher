@@ -70,6 +70,9 @@ func SetupLogger(opts *LoggingOptions) {
 	userLog := UserLog.LoggerReference()
 	*userLog = createLogger("dfuse", []zapcore.Level{zap.InfoLevel, zap.InfoLevel, zap.DebugLevel}, verbosity, logFileWriter, logStdoutWriter, logformat)
 
+	// The zlog are wrapped, they need to be re-configured with newly set base instance to work correctly
+	UserLog.ReconfigureReference()
+
 	// Fine-grain customization
 	//
 	// Note that `zapbox.WithLevel` used below does not work in all circumstances! See
