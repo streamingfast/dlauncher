@@ -250,8 +250,6 @@ func (l *Launcher) updateReady() (allReady bool) {
 					l.StoreAndStreamAppStatus(appID, pbdashboard.AppStatus_WARNING)
 				}
 			}
-		} else {
-			UserLog.Debug("does not support readiness probe", zap.String("app_id", appID))
 		}
 	}
 	return
