@@ -58,17 +58,41 @@ func SetupLogger(opts *LoggingOptions) {
 	}
 	logStdoutWriter := zapcore.Lock(os.Stdout)
 
-	commonLogger := createLogger("common", []zapcore.Level{zap.WarnLevel, zap.WarnLevel, zap.InfoLevel, zap.DebugLevel}, verbosity, logFileWriter, logStdoutWriter, logformat)
+	commonLogger := createLogger(
+		"common",
+		[]zapcore.Level{zap.WarnLevel, zap.WarnLevel, zap.InfoLevel, zap.DebugLevel},
+		verbosity,
+		logFileWriter,
+		logStdoutWriter,
+		logformat,
+	)
 	logging.Set(commonLogger)
 
 	for _, appDef := range AppRegistry {
 		logging.Set(createLogger(appDef.ID, appDef.Logger.Levels, verbosity, logFileWriter, logStdoutWriter, logformat), appDef.Logger.Regex)
 	}
 
-	logging.Set(createLogger("bstream", []zapcore.Level{zap.WarnLevel, zap.WarnLevel, zap.InfoLevel, zap.DebugLevel}, verbosity, logFileWriter, logStdoutWriter, logformat), "github.com/dfuse-io/bstream.*")
+	logging.Set(createLogger(
+		"bstream",
+		[]zapcore.Level{zap.WarnLevel, zap.WarnLevel, zap.InfoLevel, zap.DebugLevel},
+		verbosity,
+		logFileWriter,
+		logStdoutWriter,
+		logformat,
+	), "github.com/dfuse-io/bstream.*")
 
 	userLog := UserLog.LoggerReference()
-	*userLog = createLogger("dfuse", []zapcore.Level{zap.InfoLevel, zap.InfoLevel, zap.DebugLevel}, verbosity, logFileWriter, logStdoutWriter, logformat)
+	*userLog = createLogger(
+		"dfuse",
+		[]zapcore.Level{zap.InfoLevel, zap.InfoLevel, zap.DebugLevel},
+		verbosity,
+		logFileWriter,
+		logStdoutWriter,
+		logformat,
+	)
+
+	// The zlog are wrapped, they need to be re-configured with newly set base instance to work correctly
+	UserLog.ReconfigureReference()
 
 	// Fine-grain customization
 	//
