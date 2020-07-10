@@ -25,13 +25,12 @@ import (
 	"sort"
 	"time"
 
-	"github.com/dfuse-io/dlauncher/launcher"
-
 	rice "github.com/GeertJohan/go.rice"
+	"github.com/dfuse-io/dgrpc"
 	dashboard "github.com/dfuse-io/dlauncher/dashboard/pb"
 	pbdashboard "github.com/dfuse-io/dlauncher/dashboard/pb"
+	"github.com/dfuse-io/dlauncher/launcher"
 	"github.com/dfuse-io/dlauncher/metrics"
-	"github.com/dfuse-io/dgrpc"
 	"github.com/dfuse-io/shutter"
 	"github.com/golang/protobuf/ptypes"
 	tspb "github.com/golang/protobuf/ptypes/timestamp"
@@ -104,9 +103,16 @@ func (s *server) Launch() error {
 	router := mux.NewRouter()
 	router.PathPrefix("/api").HandlerFunc(s.grcpToHTTPApiHandler)
 	router.PathPrefix("/").HandlerFunc(s.dashboardStaticHandler)
+
+	errorLogger, err := zap.NewStdLogAt(zlog, zap.ErrorLevel)
+	if err != nil {
+		return fmt.Errorf("unable to create error logger: %w", err)
+	}
+
 	s.httpServer = &http.Server{
-		Addr:    s.config.HTTPListenAddr,
-		Handler: router,
+		Addr:     s.config.HTTPListenAddr,
+		Handler:  router,
+		ErrorLog: errorLogger,
 	}
 
 	zlog.Info("starting http server that wraps grpc server")
