@@ -35,6 +35,7 @@ type AppMeta struct {
 	Title string
 	ID    string
 }
+
 type Manager struct {
 	metricURL         string
 	polling           time.Duration
@@ -43,6 +44,8 @@ type Manager struct {
 
 	metricSubscription     map[string][]*subscription
 	metricSubscriptionLock sync.RWMutex
+
+	metricsServerDown bool
 }
 
 func NewManager(metricURL string, metricTypeFilter []string, polling time.Duration, metricIDMap map[string]*AppMeta) *Manager {
@@ -121,7 +124,14 @@ func (m *Manager) Launch() *Manager {
 	for {
 		timestamp, data, err := m.consumeMetricStream()
 		if err != nil {
-			zlog.Error("unable to consumer metric stream", zap.Error(err))
+			level := zap.ErrorLevel
+			if m.metricsServerDown {
+				// If we already printed an error, show it in debug aftewards to stop clogging the logs
+				level = zap.DebugLevel
+			}
+
+			m.metricsServerDown = true
+			zlog.Check(level, "unable to consume metric stream, endpoint is probably down").Write(zap.Error(err))
 			continue
 		}
 
@@ -130,9 +140,10 @@ func (m *Manager) Launch() *Manager {
 			continue
 		}
 
+		m.metricsServerDown = false
 		metrics, err := m.filterMetrics(timestamp, data)
 		if err != nil {
-			zlog.Error("unable to consumer metric stream", zap.Error(err))
+			zlog.Error("unable to filter metric stream", zap.Error(err))
 			continue
 		}
 
