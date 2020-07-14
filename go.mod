@@ -27,6 +27,7 @@ require (
 	github.com/tidwall/gjson v1.5.0
 	go.opencensus.io v0.22.2
 	go.uber.org/zap v1.15.0
+	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550
 	google.golang.org/grpc v1.26.0
 	gopkg.in/yaml.v2 v2.2.8
 )
