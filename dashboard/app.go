@@ -29,6 +29,8 @@ type Config struct {
 	GRPCListenAddr      string
 	NodeManagerAPIAddr  string
 	DmeshServiceVersion string
+	MetricsHTTPAddr     string
+
 	// Dashboard configuration payload
 	Title              string
 	BlockExplorerName  string
@@ -61,7 +63,7 @@ func New(config *Config, modules *Modules) *App {
 
 func (a *App) Run() error {
 	// Launch MetricManager
-	mgr := metrics.NewManager("http://localhost:9102/metrics", []string{"head_block_time_drift", "head_block_number"}, 5*time.Second, launcher.GetMetricAppMeta())
+	mgr := metrics.NewManager(a.config.MetricsHTTPAddr+"/metrics", []string{"head_block_time_drift", "head_block_number"}, 5*time.Second, launcher.GetMetricAppMeta())
 	go mgr.Launch()
 
 	s := newServer(a.config, a.modules, mgr)

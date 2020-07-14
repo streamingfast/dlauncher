@@ -22,7 +22,6 @@ import (
 
 	"github.com/dfuse-io/dgrpc"
 	"github.com/dfuse-io/dmetrics"
-	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
@@ -30,20 +29,21 @@ func init() {
 	dgrpc.Verbosity = 2
 }
 
-func SetupAnalyticsMetrics() {
-
-	go dmetrics.Serve(":9102")
+func SetupAnalyticsMetrics(metricsListenAddr string, pprofListenAddr string) {
+	if metricsListenAddr != "" {
+		go dmetrics.Serve(metricsListenAddr)
+	}
 
 	err := setMaxOpenFilesLimit()
 	if err != nil {
 		UserLog.Warn("unable to adjust ulimit max open files value, it might causes problem along the road", zap.Error(err))
 	}
 
-	if listenAddr := viper.GetString("global-pprof-listen-addr"); listenAddr != "" {
+	if pprofListenAddr != "" {
 		go func() {
-			err := http.ListenAndServe(listenAddr, nil)
+			err := http.ListenAndServe(pprofListenAddr, nil)
 			if err != nil {
-				UserLog.Debug("unable to start profiling server", zap.Error(err), zap.String("listen_addr", listenAddr))
+				UserLog.Debug("unable to start profiling server", zap.Error(err), zap.String("listen_addr", pprofListenAddr))
 			}
 		}()
 	}
@@ -55,7 +55,6 @@ const osxStockMaxOpenFilesLimit uint64 = 24576
 func setMaxOpenFilesLimit() error {
 	maxOpenFilesLimit, err := getMaxOpenFilesLimit()
 	if err != nil {
-		return err
 		return err
 	}
 

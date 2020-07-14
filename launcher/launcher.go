@@ -263,7 +263,7 @@ func (l *Launcher) WaitForTermination() {
 		for {
 			select {
 			case <-app.Terminated():
-				UserLog.Debug("App terminated", zap.String("app_id", appID))
+				UserLog.Debug("app terminated", zap.String("app_id", appID))
 				break innerFor
 			case <-time.After(1500 * time.Millisecond):
 				UserLog.Printf("Still waiting for app %q ... %v", appID, time.Since(now).Round(100*time.Millisecond))
@@ -282,7 +282,7 @@ func (l *Launcher) SubscribeAppStatus() *subscription {
 
 	l.appStatusSubscriptions = append(l.appStatusSubscriptions, sub)
 
-	UserLog.Debug("App status subscribed")
+	UserLog.Debug("app status subscribed")
 	return sub
 }
 
