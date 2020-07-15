@@ -11,7 +11,7 @@ type BlockTransformer interface {
 	TransformInPlace(blk *bstream.Block) error
 }
 
-type RuntimeModules struct {
+type Runtime struct {
 	SearchDmeshClient dmeshClient.SearchClient
 	Launcher          *Launcher
 	BlockFilter       BlockTransformer
