@@ -16,5 +16,5 @@ type Runtime struct {
 	Launcher          *Launcher
 	BlockFilter       BlockTransformer
 	Tracker           *bstream.Tracker
-	DfuseAbsDataDir   string
+	AbsDataDir        string
 }
