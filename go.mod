@@ -6,6 +6,7 @@ require (
 	github.com/GeertJohan/go.rice v1.0.0
 	github.com/blendle/zapdriver v1.3.1
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
+	github.com/dfuse-io/bstream v0.0.1
 	github.com/dfuse-io/derr v0.0.0-20200406214256-c690655246a1
 	github.com/dfuse-io/dgrpc v0.0.0-20200406214416-6271093e544c
 	github.com/dfuse-io/dmesh v0.0.0-20200602201926-d79e48fdac7c
@@ -27,7 +28,7 @@ require (
 	github.com/tidwall/gjson v1.5.0
 	go.opencensus.io v0.22.2
 	go.uber.org/zap v1.15.0
-	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550
+	golang.org/x/crypto v0.0.0-20191206172530-e9b2fee46413
 	google.golang.org/grpc v1.26.0
 	gopkg.in/yaml.v2 v2.2.8
 )
