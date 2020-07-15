@@ -15,4 +15,6 @@ type RuntimeModules struct {
 	SearchDmeshClient dmeshClient.SearchClient
 	Launcher          *Launcher
 	BlockFilter       BlockTransformer
+	Tracker           *bstream.Tracker
+	DfuseAbsDataDir   string
 }

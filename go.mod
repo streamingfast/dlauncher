@@ -6,7 +6,7 @@ require (
 	github.com/GeertJohan/go.rice v1.0.0
 	github.com/blendle/zapdriver v1.3.1
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
-	github.com/dfuse-io/bstream v0.0.1
+	github.com/dfuse-io/bstream v0.0.2-0.20200714123252-e9115283f55f
 	github.com/dfuse-io/derr v0.0.0-20200406214256-c690655246a1
 	github.com/dfuse-io/dgrpc v0.0.0-20200406214416-6271093e544c
 	github.com/dfuse-io/dmesh v0.0.0-20200602201926-d79e48fdac7c
