@@ -28,7 +28,7 @@ import (
 type Launcher struct {
 	shutter *shutter.Shutter
 
-	modules *RuntimeModules
+	runtime *Runtime
 	apps    map[string]App
 
 	appStatus              map[string]pbdashboard.AppStatus
@@ -39,16 +39,16 @@ type Launcher struct {
 	firstShutdownAppID string
 }
 
-func NewLauncher(modules *RuntimeModules) *Launcher {
+func NewLauncher(runtime *Runtime) *Launcher {
 	l := &Launcher{
 		shutter:   shutter.New(),
 		apps:      make(map[string]App),
 		appStatus: make(map[string]pbdashboard.AppStatus),
-		modules:   modules,
+		runtime:   runtime,
 	}
 	// TODO: this is weird should re-think this? Should the launcher be passed in every Factory App func instead?
 	// only the dashboard app that uses the launcher....
-	l.modules.Launcher = l
+	l.runtime.Launcher = l
 	return l
 }
 
@@ -69,7 +69,7 @@ func (l *Launcher) Launch(appNames []string) error {
 
 		if appDef.InitFunc != nil {
 			UserLog.Debug("initialize application", zap.String("app", appID))
-			err := appDef.InitFunc(l.modules)
+			err := appDef.InitFunc(l.runtime)
 			if err != nil {
 				return fmt.Errorf("unable to initialize app %q: %w", appID, err)
 			}
@@ -81,7 +81,7 @@ func (l *Launcher) Launch(appNames []string) error {
 
 		l.StoreAndStreamAppStatus(appID, pbdashboard.AppStatus_CREATED)
 		UserLog.Debug("creating application", zap.String("app", appID))
-		app, err := appDef.FactoryFunc(l.modules)
+		app, err := appDef.FactoryFunc(l.runtime)
 		if err != nil {
 			return fmt.Errorf("unable to create app %q: %w", appID, err)
 		}
