@@ -13,6 +13,7 @@ require (
 	github.com/dfuse-io/dmetrics v0.0.0-20200406214800-499fc7b320ab
 	github.com/dfuse-io/dtracing v0.0.0-20200406213603-4b0c0063b125
 	github.com/dfuse-io/logging v0.0.0-20200417143534-5e26069a5e39
+	github.com/dfuse-io/pbgo v0.0.6-0.20200602201455-99986ef5a09d
 	github.com/dfuse-io/shutter v1.4.1-0.20200407040739-f908f9ab727f
 	github.com/golang/protobuf v1.3.4
 	github.com/gorilla/mux v1.7.3
