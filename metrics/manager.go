@@ -121,7 +121,13 @@ func (m *Manager) getPolling() time.Duration {
 }
 
 func (m *Manager) Launch() *Manager {
+	firstLoop := true
 	for {
+		if !firstLoop {
+			time.Sleep(m.getPolling())
+		}
+
+		firstLoop = false
 		timestamp, data, err := m.consumeMetricStream()
 		if err != nil {
 			level := zap.ErrorLevel
@@ -154,7 +160,6 @@ func (m *Manager) Launch() *Manager {
 		}
 
 		m.streamMetrics(apps)
-		time.Sleep(m.getPolling())
 	}
 }
 
