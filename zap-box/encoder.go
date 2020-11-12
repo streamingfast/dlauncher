@@ -71,7 +71,7 @@ type Encoder struct {
 }
 
 func NewEncoder(verbosity int) zapcore.Encoder {
-	isDebug := os.Getenv("DEBUG") != ""
+	isDebug := os.Getenv("DEBUG") != "" || os.Getenv("TRACE") != ""
 	isInfo := os.Getenv("INFO") != ""
 	isTTY := terminal.IsTerminal(int(os.Stdout.Fd()))
 

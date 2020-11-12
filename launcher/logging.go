@@ -111,6 +111,10 @@ func SetupLogger(opts *LoggingOptions) {
 		changeLoggersLevel(value, zap.DebugLevel)
 	}
 
+	if value := os.Getenv("TRACE"); value != "" {
+		changeLoggersLevel(value, zap.DebugLevel)
+	}
+
 	// Hijack standard Golang `log` and redirect it to our common logger
 	zap.RedirectStdLogAt(commonLogger, zap.DebugLevel)
 
