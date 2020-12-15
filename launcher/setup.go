@@ -34,8 +34,7 @@ func SetupAnalyticsMetrics(metricsListenAddr string, pprofListenAddr string) {
 		go dmetrics.Serve(metricsListenAddr)
 	}
 
-	err := setMaxOpenFilesLimit()
-	if err != nil {
+	if err := SetMaxOpenFilesLimit(goodEnoughMaxOpenFilesLimit, osxStockMaxOpenFilesLimit); err != nil {
 		UserLog.Warn("unable to adjust ulimit max open files value, it might causes problem along the road", zap.Error(err))
 	}
 
@@ -49,18 +48,18 @@ func SetupAnalyticsMetrics(metricsListenAddr string, pprofListenAddr string) {
 	}
 }
 
-const goodEnoughMaxOpenFilesLimit uint64 = 256000
+const goodEnoughMaxOpenFilesLimit uint64 = 1000000
 const osxStockMaxOpenFilesLimit uint64 = 24576
 
-func setMaxOpenFilesLimit() error {
+func SetMaxOpenFilesLimit(goodEnoughMaxOpenFiles, osxStockMaxOpenFiles uint64) error {
 	maxOpenFilesLimit, err := getMaxOpenFilesLimit()
 	if err != nil {
 		return err
 	}
 
 	UserLog.Debug("ulimit max open files before adjustment", zap.Uint64("current_value", maxOpenFilesLimit))
-	if maxOpenFilesLimit >= goodEnoughMaxOpenFilesLimit {
-		UserLog.Debug("no need to update ulimit as it's already higher than our good enough value", zap.Uint64("good_enough_value", goodEnoughMaxOpenFilesLimit))
+	if maxOpenFilesLimit >= goodEnoughMaxOpenFiles {
+		UserLog.Debug("no need to update ulimit as it's already higher than our good enough value", zap.Uint64("good_enough_value", goodEnoughMaxOpenFiles))
 		return nil
 	}
 
@@ -73,14 +72,14 @@ func setMaxOpenFilesLimit() error {
 	// should probably even try a higher value than the minimal OS X value first.
 	//
 	// We might need conditional compilation units here to make the logic easier.
-	err = trySetMaxOpenFilesLimit(goodEnoughMaxOpenFilesLimit)
+	err = trySetMaxOpenFilesLimit(goodEnoughMaxOpenFiles)
 	if err != nil {
 		UserLog.Debug("unable to use our good enough ulimit max open files value, going to try with something lower", zap.Error(err))
 	} else {
 		return logValueAfterAdjustment()
 	}
 
-	err = trySetMaxOpenFilesLimit(osxStockMaxOpenFilesLimit)
+	err = trySetMaxOpenFilesLimit(osxStockMaxOpenFiles)
 	if err != nil {
 		return fmt.Errorf("cannot set ulimit max open files: %w", err)
 	}
