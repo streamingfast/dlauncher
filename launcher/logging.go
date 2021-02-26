@@ -44,6 +44,7 @@ type LoggingOptions struct {
 	LogFormat     string // specifies the log format
 	LogToFile     bool   // specifies if we should store the logs on disk
 	LogListenAddr string // address that listens to change the logs
+	LogToStderr   bool   // determines if the standard console logger should log to Stderr (defaults is to log in Stdout)
 }
 
 func SetupLogger(opts *LoggingOptions) {
@@ -56,20 +57,26 @@ func SetupLogger(opts *LoggingOptions) {
 	if opts.LogToFile {
 		logFileWriter = createLogFileWriter(opts.WorkingDir)
 	}
-	logStdoutWriter := zapcore.Lock(os.Stdout)
+
+	var logConsoleWriter zapcore.WriteSyncer
+	if opts.LogToStderr {
+		logConsoleWriter = zapcore.Lock(os.Stderr)
+	} else {
+		logConsoleWriter = zapcore.Lock(os.Stdout)
+	}
 
 	commonLogger := createLogger(
 		"common",
 		[]zapcore.Level{zap.WarnLevel, zap.WarnLevel, zap.InfoLevel, zap.DebugLevel},
 		verbosity,
 		logFileWriter,
-		logStdoutWriter,
+		logConsoleWriter,
 		logformat,
 	)
 	logging.Set(commonLogger)
 
 	for _, appDef := range AppRegistry {
-		logging.Set(createLogger(appDef.ID, appDef.Logger.Levels, verbosity, logFileWriter, logStdoutWriter, logformat), appDef.Logger.Regex)
+		logging.Set(createLogger(appDef.ID, appDef.Logger.Levels, verbosity, logFileWriter, logConsoleWriter, logformat), appDef.Logger.Regex)
 	}
 
 	logging.Set(createLogger(
@@ -77,7 +84,7 @@ func SetupLogger(opts *LoggingOptions) {
 		[]zapcore.Level{zap.WarnLevel, zap.WarnLevel, zap.InfoLevel, zap.DebugLevel},
 		verbosity,
 		logFileWriter,
-		logStdoutWriter,
+		logConsoleWriter,
 		logformat,
 	), "github.com/dfuse-io/bstream.*")
 
@@ -87,7 +94,7 @@ func SetupLogger(opts *LoggingOptions) {
 		[]zapcore.Level{zap.InfoLevel, zap.InfoLevel, zap.DebugLevel},
 		verbosity,
 		logFileWriter,
-		logStdoutWriter,
+		logConsoleWriter,
 		logformat,
 	)
 
