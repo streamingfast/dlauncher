@@ -17,7 +17,7 @@ package metrics
 import (
 	"sync"
 
-	pbdashboard "github.com/dfuse-io/dlauncher/dashboard/pb"
+	pbdashboard "github.com/streamingfast/dlauncher/dashboard/pb"
 	"go.uber.org/zap"
 )
 

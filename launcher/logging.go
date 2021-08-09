@@ -25,8 +25,8 @@ import (
 	"sync"
 
 	"github.com/blendle/zapdriver"
-	zapbox "github.com/dfuse-io/dlauncher/zap-box"
 	"github.com/dfuse-io/logging"
+	zapbox "github.com/streamingfast/dlauncher/zap-box"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -35,7 +35,7 @@ var UserLog = zapbox.NewCLILogger(zap.NewNop())
 var zlog *zap.Logger
 
 func init() {
-	logging.Register("github.com/dfuse-io/dlauncher/launcher", &zlog)
+	logging.Register("github.com/streamingfast/dlauncher/launcher", &zlog)
 }
 
 type LoggingOptions struct {

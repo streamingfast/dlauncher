@@ -1,4 +1,4 @@
-module github.com/dfuse-io/dlauncher
+module github.com/streamingfast/dlauncher
 
 go 1.14
 

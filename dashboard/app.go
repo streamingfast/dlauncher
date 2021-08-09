@@ -17,10 +17,10 @@ package dashboard
 import (
 	"time"
 
-	"github.com/dfuse-io/dlauncher/launcher"
-	"github.com/dfuse-io/dlauncher/metrics"
 	dmeshCli "github.com/dfuse-io/dmesh/client"
 	"github.com/dfuse-io/shutter"
+	"github.com/streamingfast/dlauncher/launcher"
+	"github.com/streamingfast/dlauncher/metrics"
 	"go.uber.org/zap"
 )
 

@@ -21,9 +21,9 @@ import (
 	"strings"
 	"time"
 
-	pbdashboard "github.com/dfuse-io/dlauncher/dashboard/pb"
 	"github.com/golang/protobuf/ptypes"
 	tspb "github.com/golang/protobuf/ptypes/timestamp"
+	pbdashboard "github.com/streamingfast/dlauncher/dashboard/pb"
 	"github.com/tidwall/gjson"
 	"go.uber.org/zap"
 )
