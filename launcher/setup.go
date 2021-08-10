@@ -21,7 +21,7 @@ import (
 	"syscall"
 
 	"github.com/dfuse-io/dgrpc"
-	"github.com/dfuse-io/dmetrics"
+	"github.com/streamingfast/dmetrics"
 	"go.uber.org/zap"
 )
 
