@@ -466,6 +466,14 @@ github.com/streamingfast/dmesh v0.0.0-20210224224128-9a9ef510dce1 h1:4dcAcoEd+Q8
 github.com/streamingfast/dmesh v0.0.0-20210224224128-9a9ef510dce1/go.mod h1:JPgQFeh1CGcDbhUggNYVq5O/Ds13jSnF5fXME3FYExw=
 github.com/streamingfast/dmesh v0.0.0-20210809214524-5f9d6b7ebe89 h1:AorfFYwaciBwBZ33fxtPe1BpXqLWEVUB0825VA3BXBE=
 github.com/streamingfast/dmesh v0.0.0-20210809214524-5f9d6b7ebe89/go.mod h1:fXLKDuTTJ2Oc+CWrQpz9UaHcOlsRfAqN54M03+KLH74=
+github.com/streamingfast/dtracing v0.0.0-20200406213603-4b0c0063b125 h1:XvwJj/xDY0TQV1y1MvMBINLK/4RGrhuc2HmHscnRgdM=
+github.com/streamingfast/dtracing v0.0.0-20200406213603-4b0c0063b125 h1:XvwJj/xDY0TQV1y1MvMBINLK/4RGrhuc2HmHscnRgdM=
+github.com/streamingfast/dtracing v0.0.0-20200406213603-4b0c0063b125/go.mod h1:SA/v5q2RIuah2W5uvVldEUwfFprEhGiw66Id0j68rtw=
+github.com/streamingfast/dtracing v0.0.0-20200406213603-4b0c0063b125/go.mod h1:SA/v5q2RIuah2W5uvVldEUwfFprEhGiw66Id0j68rtw=
+github.com/streamingfast/dtracing v0.0.0-20210810035915-473055fed32a h1:f2z0hl0EzhIkzErTPGf6ntF1kdOUZTWAz/DajsTgu9s=
+github.com/streamingfast/dtracing v0.0.0-20210810035915-473055fed32a/go.mod h1:z8WI8Y2sVfFZQQewUC40hE3TgISt3K4n5RwKzXG65Pg=
+github.com/streamingfast/dtracing v0.0.0-20210810040633-7c6259bea4a7 h1:QTexpFX7NUpLdS3+qAWQGajnKt6nFcbGlvKGjk961wU=
+github.com/streamingfast/dtracing v0.0.0-20210810040633-7c6259bea4a7/go.mod h1:z8WI8Y2sVfFZQQewUC40hE3TgISt3K4n5RwKzXG65Pg=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.1.1/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=

@@ -16,7 +16,7 @@ package launcher
 
 import (
 	"github.com/streamingfast/derr"
-	"github.com/dfuse-io/dtracing"
+	"github.com/streamingfast/dtracing"
 	"go.opencensus.io/trace"
 )
 
