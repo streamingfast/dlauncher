@@ -6,10 +6,9 @@ require (
 	github.com/GeertJohan/go.rice v1.0.0
 	github.com/blendle/zapdriver v1.3.1
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
-	github.com/dfuse-io/bstream v0.0.2-0.20210810193659-788cf4d32e16
-	github.com/dfuse-io/dgrpc v0.0.0-20210810125735-867cc255530c
+	github.com/dfuse-io/bstream v0.0.2-0.20210810200727-06a4c4aaeb99
 	github.com/dfuse-io/logging v0.0.0-20210518215502-2d920b2ad1f2
-	github.com/dfuse-io/pbgo v0.0.6-0.20210429181308-d54fc7723ad3
+	github.com/dfuse-io/pbgo v0.0.6-0.20210810190312-2053a3b38779
 	github.com/golang/protobuf v1.5.2
 	github.com/gorilla/mux v1.7.3
 	github.com/improbable-eng/grpc-web v0.12.0
@@ -20,7 +19,9 @@ require (
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.6.2
+	github.com/streamingfast/blockmeta v0.0.2-0.20210810190006-1daeff8bc987 // indirect
 	github.com/streamingfast/derr v0.0.0-20210810022442-32249850a4fb
+	github.com/streamingfast/dgrpc v0.0.0-20210810185305-905172f728e8 // indirect
 	github.com/streamingfast/dmesh v0.0.0-20210810194153-7e56f639d42f
 	github.com/streamingfast/dmetrics v0.0.0-20210810172555-564d623b116f
 	github.com/streamingfast/dtracing v0.0.0-20210810040633-7c6259bea4a7

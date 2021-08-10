@@ -20,7 +20,7 @@ import (
 	_ "net/http/pprof"
 	"syscall"
 
-	"github.com/dfuse-io/dgrpc"
+	"github.com/streamingfast/dgrpc"
 	"github.com/streamingfast/dmetrics"
 	"go.uber.org/zap"
 )
