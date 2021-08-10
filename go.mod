@@ -7,7 +7,6 @@ require (
 	github.com/blendle/zapdriver v1.3.1
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
 	github.com/dfuse-io/bstream v0.0.2-0.20200714123252-e9115283f55f
-	github.com/dfuse-io/derr v0.0.0-20200406214256-c690655246a1
 	github.com/dfuse-io/dgrpc v0.0.0-20201215171222-11bde2006cf9
 	github.com/dfuse-io/dmetrics v0.0.0-20200406214800-499fc7b320ab
 	github.com/dfuse-io/dtracing v0.0.0-20200406213603-4b0c0063b125
@@ -24,6 +23,7 @@ require (
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.6.2
+	github.com/streamingfast/derr v0.0.0-20210810022442-32249850a4fb
 	github.com/streamingfast/dmesh v0.0.0-20210809214524-5f9d6b7ebe89
 	github.com/stretchr/testify v1.7.0
 	github.com/tidwall/gjson v1.5.0
