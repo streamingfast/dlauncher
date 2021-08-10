@@ -27,7 +27,7 @@ import (
 
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/dfuse-io/dgrpc"
-	"github.com/dfuse-io/shutter"
+	"github.com/streamingfast/shutter"
 	"github.com/golang/protobuf/ptypes"
 	tspb "github.com/golang/protobuf/ptypes/timestamp"
 	"github.com/gorilla/mux"

@@ -17,7 +17,7 @@ package dashboard
 import (
 	"time"
 
-	"github.com/dfuse-io/shutter"
+	"github.com/streamingfast/shutter"
 	"github.com/streamingfast/dlauncher/launcher"
 	"github.com/streamingfast/dlauncher/metrics"
 	dmeshCli "github.com/streamingfast/dmesh/client"

@@ -20,7 +20,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/dfuse-io/shutter"
+	"github.com/streamingfast/shutter"
 	pbdashboard "github.com/streamingfast/dlauncher/dashboard/pb"
 	"go.uber.org/zap"
 )
