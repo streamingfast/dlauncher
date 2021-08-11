@@ -6,9 +6,13 @@ require (
 	github.com/GeertJohan/go.rice v1.0.0
 	github.com/blendle/zapdriver v1.3.1
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
-	github.com/dfuse-io/bstream v0.0.2-0.20210810200727-06a4c4aaeb99
+	github.com/dfuse-io/bstream v0.0.2-0.20210811160908-fc6cb0861d48
+	github.com/dfuse-io/dbin v0.0.0-20200406215642-ec7f22e794eb // indirect
+	github.com/dfuse-io/dgrpc v0.0.0-20210810041652-d033fee35ae0 // indirect
+	github.com/dfuse-io/dmetrics v0.0.0-20200406214800-499fc7b320ab // indirect
+	github.com/dfuse-io/dstore v0.1.0 // indirect
+	github.com/dfuse-io/jsonpb v0.0.0-20200406211248-c5cf83f0e0c0 // indirect
 	github.com/dfuse-io/logging v0.0.0-20210518215502-2d920b2ad1f2
-	github.com/dfuse-io/pbgo v0.0.6-0.20210810190312-2053a3b38779
 	github.com/golang/protobuf v1.5.2
 	github.com/gorilla/mux v1.7.3
 	github.com/gorilla/websocket v1.4.1-0.20190629185528-ae1634f6a989 // indirect
@@ -17,14 +21,16 @@ require (
 	github.com/prometheus/client_model v0.2.0
 	github.com/prometheus/prom2json v1.3.0
 	github.com/rs/cors v1.7.0 // indirect
+	github.com/rs/xid v1.2.1 // indirect
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.6.2
 	github.com/streamingfast/derr v0.0.0-20210810022442-32249850a4fb
-	github.com/streamingfast/dgrpc v0.0.0-20210810185305-905172f728e8
+	github.com/streamingfast/dgrpc v0.0.0-20210811160823-a39dfa7fff0d
 	github.com/streamingfast/dmesh v0.0.0-20210810205752-f210f374556e
 	github.com/streamingfast/dmetrics v0.0.0-20210810205551-6071d7bae2cd
 	github.com/streamingfast/dtracing v0.0.0-20210810040633-7c6259bea4a7
+	github.com/streamingfast/pbgo v0.0.6-0.20210811160400-7c146c2db8cc // indirect
 	github.com/streamingfast/shutter v1.5.0
 	github.com/stretchr/testify v1.7.0
 	github.com/tidwall/gjson v1.5.0
