@@ -86,7 +86,7 @@ func SetupLogger(opts *LoggingOptions) {
 		logFileWriter,
 		logConsoleWriter,
 		logformat,
-	), "github.com/dfuse-io/bstream.*")
+	), "github.com/streamingfast/bstream.*")
 
 	userLog := UserLog.LoggerReference()
 	*userLog = createLogger(

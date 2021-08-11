@@ -6,7 +6,6 @@ require (
 	github.com/GeertJohan/go.rice v1.0.0
 	github.com/blendle/zapdriver v1.3.1
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
-	github.com/dfuse-io/bstream v0.0.2-0.20210811160908-fc6cb0861d48
 	github.com/dfuse-io/dbin v0.0.0-20200406215642-ec7f22e794eb // indirect
 	github.com/dfuse-io/dgrpc v0.0.0-20210810041652-d033fee35ae0 // indirect
 	github.com/dfuse-io/dmetrics v0.0.0-20200406214800-499fc7b320ab // indirect
@@ -25,6 +24,7 @@ require (
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.6.2
+	github.com/streamingfast/bstream v0.0.2-0.20210811172811-82db64e6763f // indirect
 	github.com/streamingfast/derr v0.0.0-20210810022442-32249850a4fb
 	github.com/streamingfast/dgrpc v0.0.0-20210811160823-a39dfa7fff0d
 	github.com/streamingfast/dmesh v0.0.0-20210810205752-f210f374556e

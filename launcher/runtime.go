@@ -1,7 +1,7 @@
 package launcher
 
 import (
-	"github.com/dfuse-io/bstream"
+	"github.com/streamingfast/bstream"
 	pbblockmeta "github.com/streamingfast/pbgo/dfuse/blockmeta/v1"
 	dmeshClient "github.com/streamingfast/dmesh/client"
 )
