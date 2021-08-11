@@ -11,7 +11,6 @@ require (
 	github.com/dfuse-io/dmetrics v0.0.0-20200406214800-499fc7b320ab // indirect
 	github.com/dfuse-io/dstore v0.1.0 // indirect
 	github.com/dfuse-io/jsonpb v0.0.0-20200406211248-c5cf83f0e0c0 // indirect
-	github.com/dfuse-io/logging v0.0.0-20210518215502-2d920b2ad1f2
 	github.com/golang/protobuf v1.5.2
 	github.com/gorilla/mux v1.7.3
 	github.com/gorilla/websocket v1.4.1-0.20190629185528-ae1634f6a989 // indirect
@@ -24,19 +23,20 @@ require (
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.6.2
-	github.com/streamingfast/bstream v0.0.2-0.20210811172811-82db64e6763f // indirect
-	github.com/streamingfast/derr v0.0.0-20210810022442-32249850a4fb
-	github.com/streamingfast/dgrpc v0.0.0-20210811160823-a39dfa7fff0d
-	github.com/streamingfast/dmesh v0.0.0-20210810205752-f210f374556e
-	github.com/streamingfast/dmetrics v0.0.0-20210810205551-6071d7bae2cd
-	github.com/streamingfast/dtracing v0.0.0-20210810040633-7c6259bea4a7
+	github.com/streamingfast/bstream v0.0.2-0.20210811181043-4c1920a7e3e3 // indirect
+	github.com/streamingfast/derr v0.0.0-20210811180100-9138d738bcec
+	github.com/streamingfast/dgrpc v0.0.0-20210811180351-8646818518b2
+	github.com/streamingfast/dmesh v0.0.0-20210811181323-5a37ad73216b
+	github.com/streamingfast/dmetrics v0.0.0-20210811180524-8494aeb34447
+	github.com/streamingfast/dtracing v0.0.0-20210811175635-d55665d3622a
+	github.com/streamingfast/logging v0.0.0-20210811175431-f3b44b61606a // indirect
 	github.com/streamingfast/pbgo v0.0.6-0.20210811160400-7c146c2db8cc // indirect
 	github.com/streamingfast/shutter v1.5.0
 	github.com/stretchr/testify v1.7.0
 	github.com/tidwall/gjson v1.5.0
-	go.opencensus.io v0.22.4
+	go.opencensus.io v0.23.0
 	go.uber.org/zap v1.17.0
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
-	google.golang.org/grpc v1.38.0
+	google.golang.org/grpc v1.39.1
 	gopkg.in/yaml.v2 v2.4.0
 )

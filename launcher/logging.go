@@ -25,7 +25,7 @@ import (
 	"sync"
 
 	"github.com/blendle/zapdriver"
-	"github.com/dfuse-io/logging"
+	"github.com/streamingfast/logging"
 	zapbox "github.com/streamingfast/dlauncher/zap-box"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
