@@ -27,7 +27,7 @@ require (
 	github.com/streamingfast/pbgo v0.0.6-0.20210811160400-7c146c2db8cc
 	github.com/streamingfast/shutter v1.5.0
 	github.com/stretchr/testify v1.7.0
-	github.com/tidwall/gjson v1.5.0
+	github.com/tidwall/gjson v1.6.5
 	go.opencensus.io v0.23.0
 	go.uber.org/zap v1.17.0
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
