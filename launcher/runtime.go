@@ -2,8 +2,8 @@ package launcher
 
 import (
 	"github.com/streamingfast/bstream"
-	pbblockmeta "github.com/streamingfast/pbgo/dfuse/blockmeta/v1"
 	dmeshClient "github.com/streamingfast/dmesh/client"
+	pbblockmeta "github.com/streamingfast/pbgo/sf/blockmeta/v1"
 )
 
 // TODO: TransformableBlock Interface is not placed in bstream yet, since we want
