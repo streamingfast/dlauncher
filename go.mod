@@ -3,7 +3,6 @@ module github.com/streamingfast/dlauncher
 go 1.14
 
 require (
-	github.com/Azure/go-autorest/autorest v0.9.0 // indirect
 	github.com/GeertJohan/go.rice v1.0.0
 	github.com/blendle/zapdriver v1.3.1
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
@@ -18,10 +17,9 @@ require (
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.6.2
-	github.com/streamingfast/bstream v0.0.2-0.20211209212822-3666e8806588
+	github.com/streamingfast/bstream v0.0.2-0.20211210153845-a3cb593a5df1
 	github.com/streamingfast/derr v0.0.0-20210811180100-9138d738bcec
-	github.com/streamingfast/dgrpc v0.0.0-20210901144702-c57c3701768b
-	github.com/streamingfast/dhammer v0.0.0-20210811180702-456c4cf0a840 // indirect
+	github.com/streamingfast/dgrpc v0.0.0-20211210152421-f8cec68e0383
 	github.com/streamingfast/dmesh v0.0.0-20210811181323-5a37ad73216b
 	github.com/streamingfast/dmetrics v0.0.0-20210811180524-8494aeb34447
 	github.com/streamingfast/dtracing v0.0.0-20210811175635-d55665d3622a
