@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/streamingfast/dlauncher/metrics"
 	"go.uber.org/zap"
 )
 
@@ -14,17 +13,6 @@ var AppRegistry = map[string]*AppDef{}
 func RegisterApp(appDef *AppDef) {
 	UserLog.Debug("registering app", zap.String("app_id", appDef.ID))
 	AppRegistry[appDef.ID] = appDef
-}
-
-func GetMetricAppMeta() map[string]*metrics.AppMeta {
-	mapping := make(map[string]*metrics.AppMeta)
-	for _, appDef := range AppRegistry {
-		mapping[appDef.MetricsID] = &metrics.AppMeta{
-			Title: appDef.Title,
-			ID:    appDef.ID,
-		}
-	}
-	return mapping
 }
 
 var RegisterCommonFlags func(cmd *cobra.Command) error

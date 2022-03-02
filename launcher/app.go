@@ -44,3 +44,21 @@ type App interface {
 type readiable interface {
 	IsReady() bool
 }
+
+//go:generate go-enum -f=$GOFILE --marshal --names
+
+//
+// ENUM(
+//   NotFound
+//   Created
+//   Running
+//   Warning
+//   Stopped
+// )
+//
+type AppStatus uint
+
+type AppInfo struct {
+	ID     string
+	Status AppStatus
+}

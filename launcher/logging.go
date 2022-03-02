@@ -26,12 +26,12 @@ import (
 
 	"github.com/blendle/zapdriver"
 	"github.com/streamingfast/logging"
-	zapbox "github.com/streamingfast/dlauncher/zap-box"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
-var UserLog = zapbox.NewCLILogger(zap.NewNop())
+var UserLog = newCLILogger(zap.NewNop())
 var zlog *zap.Logger
 
 func init() {
@@ -194,7 +194,9 @@ func createLogger(appID string, levels []zapcore.Level, verbosity int, fileSynce
 		encoderConfig := zapdriver.NewProductionEncoderConfig()
 		consoleCore = zapcore.NewCore(zapcore.NewJSONEncoder(encoderConfig), consoleSyncer, appToAtomicLevel[appID])
 	default:
-		consoleCore = zapcore.NewCore(zapbox.NewEncoder(verbosity), consoleSyncer, appToAtomicLevel[appID])
+		isTTY := terminal.IsTerminal(int(os.Stdout.Fd()))
+
+		consoleCore = zapcore.NewCore(logging.NewEncoder(verbosity, isTTY), consoleSyncer, appToAtomicLevel[appID])
 	}
 
 	if fileSyncer == nil {
@@ -237,7 +239,7 @@ func changeAppLogLevel(appID string, level zapcore.Level) {
 
 func overrideLoggerLevel(level zapcore.Level) logging.LoggerExtender {
 	return func(current *zap.Logger) *zap.Logger {
-		return current.WithOptions(zapbox.WithLevel(level))
+		return current.WithOptions(logging.WithLevel(level))
 	}
 }
 
@@ -267,4 +269,46 @@ func createLogFileWriter(dataDir string) zapcore.WriteSyncer {
 
 	// Might return `nil`, which is handled by logging
 	return writer
+}
+
+// cliLogger wraps a `zap.Logger` pointer and offers only a printf like interface
+type cliLogger struct {
+	base *zap.Logger
+}
+
+func newCLILogger(base *zap.Logger) *cliLogger {
+	return &cliLogger{base}
+}
+
+func (l *cliLogger) LoggerReference() **zap.Logger {
+	return &l.base
+}
+
+func (l *cliLogger) ReconfigureReference() {
+	l.base = l.base.WithOptions(zap.AddCallerSkip(1))
+}
+
+func (l *cliLogger) Printf(template string, args ...interface{}) {
+	if l.base.Core().Enabled(zapcore.InfoLevel) {
+		l.base.Check(zap.InfoLevel, fmt.Sprintf(template, args...)).Write()
+	}
+}
+
+func (l *cliLogger) Debug(msg string, fields ...zapcore.Field) {
+	l.base.Check(zap.DebugLevel, msg).Write(fields...)
+}
+
+func (l *cliLogger) Warn(msg string, fields ...zapcore.Field) {
+	l.base.Check(zap.WarnLevel, msg).Write(fields...)
+}
+
+func (l *cliLogger) Error(msg string, fields ...zapcore.Field) {
+	l.base.Check(zap.ErrorLevel, msg).Write(fields...)
+}
+
+func (l *cliLogger) FatalAppError(app string, err error) {
+	msg := fmt.Sprintf("\n################################################################\n"+
+		"Fatal error in app %s:\n\n%s"+
+		"\n################################################################\n", app, err)
+	l.base.Check(zap.ErrorLevel, msg).Write()
 }

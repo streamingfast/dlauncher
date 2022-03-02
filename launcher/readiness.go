@@ -17,23 +17,22 @@ package launcher
 import (
 	"sync"
 
-	pbdashboard "github.com/streamingfast/dlauncher/dashboard/pb"
 	"go.uber.org/zap"
 )
 
 type subscription struct {
-	IncomingAppInfo chan *pbdashboard.AppInfo
+	IncomingAppInfo chan *AppInfo
 	Closed          bool
 	QuitOnce        sync.Once
 }
 
 func newSubscription(chanSize int) (out *subscription) {
 	return &subscription{
-		IncomingAppInfo: make(chan *pbdashboard.AppInfo, chanSize),
+		IncomingAppInfo: make(chan *AppInfo, chanSize),
 	}
 }
 
-func (s *subscription) Push(app *pbdashboard.AppInfo) {
+func (s *subscription) Push(app *AppInfo) {
 	if s.Closed {
 		return
 	}

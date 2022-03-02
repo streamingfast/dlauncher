@@ -21,7 +21,6 @@ import (
 	"time"
 
 	"github.com/streamingfast/shutter"
-	pbdashboard "github.com/streamingfast/dlauncher/dashboard/pb"
 	"go.uber.org/zap"
 )
 
@@ -31,7 +30,7 @@ type Launcher struct {
 	runtime *Runtime
 	apps    map[string]App
 
-	appStatus              map[string]pbdashboard.AppStatus
+	appStatus              map[string]AppStatus
 	appStatusSubscriptions []*subscription
 	appStatusLock          sync.RWMutex
 
@@ -43,7 +42,7 @@ func NewLauncher(runtime *Runtime) *Launcher {
 	l := &Launcher{
 		shutter:   shutter.New(),
 		apps:      make(map[string]App),
-		appStatus: make(map[string]pbdashboard.AppStatus),
+		appStatus: make(map[string]AppStatus),
 		runtime:   runtime,
 	}
 	// TODO: this is weird should re-think this? Should the launcher be passed in every Factory App func instead?
@@ -79,7 +78,7 @@ func (l *Launcher) Launch(appNames []string) error {
 	for _, appID := range appNames {
 		appDef := AppRegistry[appID]
 
-		l.StoreAndStreamAppStatus(appID, pbdashboard.AppStatus_CREATED)
+		l.StoreAndStreamAppStatus(appID, AppStatusCreated)
 		UserLog.Debug("creating application", zap.String("app", appID))
 		app, err := appDef.FactoryFunc(l.runtime)
 		if err != nil {
@@ -177,7 +176,7 @@ func (l *Launcher) shutdownDueToApp(appID string, err error) {
 		}
 	})
 
-	l.StoreAndStreamAppStatus(appID, pbdashboard.AppStatus_STOPPED)
+	l.StoreAndStreamAppStatus(appID, AppStatusStopped)
 	l.shutter.Shutdown(err)
 }
 
@@ -199,14 +198,14 @@ func (l *Launcher) shutdownIfRecoveringFromPanic(appID string, recovered interfa
 	l.shutdownDueToApp(appID, err)
 }
 
-func (l *Launcher) StoreAndStreamAppStatus(appID string, status pbdashboard.AppStatus) {
+func (l *Launcher) StoreAndStreamAppStatus(appID string, status AppStatus) {
 	l.appStatusLock.Lock()
 	defer l.appStatusLock.Unlock()
 
 	l.appStatus[appID] = status
 
-	appInfo := &pbdashboard.AppInfo{
-		Id:     appID,
+	appInfo := &AppInfo{
+		ID:     appID,
 		Status: status,
 	}
 
@@ -215,7 +214,7 @@ func (l *Launcher) StoreAndStreamAppStatus(appID string, status pbdashboard.AppS
 	}
 }
 
-func (l *Launcher) GetAppStatus(appID string) pbdashboard.AppStatus {
+func (l *Launcher) GetAppStatus(appID string) AppStatus {
 	l.appStatusLock.RLock()
 	defer l.appStatusLock.RUnlock()
 
@@ -223,7 +222,7 @@ func (l *Launcher) GetAppStatus(appID string) pbdashboard.AppStatus {
 		return v
 	}
 
-	return pbdashboard.AppStatus_NOTFOUND
+	return AppStatusNotFound
 }
 
 func (l *Launcher) GetAppIDs() (resp []string) {
@@ -239,15 +238,15 @@ func (l *Launcher) updateReady() (allReady bool) {
 		if readyableApp, ok := app.(readiable); ok {
 			if readyableApp.IsReady() {
 
-				if l.GetAppStatus(appID) != pbdashboard.AppStatus_RUNNING {
+				if l.GetAppStatus(appID) != AppStatusRunning {
 					UserLog.Debug("app status switching to running", zap.String("app_id", appID))
-					l.StoreAndStreamAppStatus(appID, pbdashboard.AppStatus_RUNNING)
+					l.StoreAndStreamAppStatus(appID, AppStatusRunning)
 				}
 			} else {
 				allReady = false
-				if l.GetAppStatus(appID) != pbdashboard.AppStatus_WARNING {
+				if l.GetAppStatus(appID) != AppStatusWarning {
 					UserLog.Debug("app status switching to warning", zap.String("app_id", appID))
-					l.StoreAndStreamAppStatus(appID, pbdashboard.AppStatus_WARNING)
+					l.StoreAndStreamAppStatus(appID, AppStatusWarning)
 				}
 			}
 		}
