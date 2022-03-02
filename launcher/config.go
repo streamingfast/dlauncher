@@ -7,9 +7,9 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var DfuseConfig map[string]*DfuseCommandConfig
+var Config map[string]*CommandConfig
 
-type DfuseCommandConfig struct {
+type CommandConfig struct {
 	Args  []string          `json:"args"`
 	Flags map[string]string `json:"flags"`
 }
@@ -23,7 +23,7 @@ func LoadConfigFile(filename string) (err error) {
 		return err
 	}
 
-	err = yaml.Unmarshal(yamlBytes, &DfuseConfig)
+	err = yaml.Unmarshal(yamlBytes, &Config)
 	if err != nil {
 		return fmt.Errorf("reading json: %s", err)
 	}

@@ -90,7 +90,7 @@ func SetupLogger(opts *LoggingOptions) {
 
 	userLog := UserLog.LoggerReference()
 	*userLog = createLogger(
-		"dfuse",
+		"app",
 		[]zapcore.Level{zap.InfoLevel, zap.InfoLevel, zap.DebugLevel},
 		verbosity,
 		logFileWriter,
@@ -214,7 +214,7 @@ func createLogger(appID string, levels []zapcore.Level, verbosity int, fileSynce
 func changeLoggersLevel(inputs string, level zapcore.Level) {
 	for _, input := range strings.Split(inputs, ",") {
 		normalizeInput := strings.Trim(input, " ")
-		if normalizeInput == "bstream" || normalizeInput == "dfuse" || AppRegistry[normalizeInput] != nil {
+		if normalizeInput == "bstream" || normalizeInput == "app" || AppRegistry[normalizeInput] != nil {
 			changeAppLogLevel(normalizeInput, level)
 		} else {
 			// Assumes it's a regex, we use the unnormalized input, just in case it had some spaces
@@ -255,10 +255,10 @@ func appLoggerLevel(levels []zapcore.Level, verbosity int) zapcore.Level {
 func createLogFileWriter(dataDir string) zapcore.WriteSyncer {
 	_ = os.Mkdir(dataDir, 0755)
 
-	logFile := filepath.Join(dataDir, "dfuse.log.json")
+	logFile := filepath.Join(dataDir, "app.log.json")
 	writer, _, err := zap.Open(logFile)
 	if err != nil {
-		tempLogFile := filepath.Join(os.TempDir(), "dfuse.log.json")
+		tempLogFile := filepath.Join(os.TempDir(), "app.log.json")
 		fmt.Printf("Unable to use %q for logging purposes, trying with %q instead (error: %s)\n", logFile, tempLogFile, err)
 		writer, _, err := zap.Open(logFile)
 		if err != nil {
