@@ -2,8 +2,6 @@ package launcher
 
 import (
 	"github.com/streamingfast/bstream"
-	dmeshClient "github.com/streamingfast/dmesh/client"
-	pbblockmeta "github.com/streamingfast/pbgo/sf/blockmeta/v1"
 )
 
 // TODO: TransformableBlock Interface is not placed in bstream yet, since we want
@@ -13,10 +11,9 @@ type BlockTransformer interface {
 }
 
 type Runtime struct {
-	SearchDmeshClient dmeshClient.SearchClient
-	Launcher          *Launcher
-	BlockFilter       BlockTransformer
-	BlockMeta         pbblockmeta.BlockIDClient
-	Tracker           *bstream.Tracker
-	AbsDataDir        string
+	AbsDataDir string
+	Launcher   *Launcher
+	Tracker    *bstream.Tracker
+
+	ProtocolSpecificModules map[string]interface{}
 }
