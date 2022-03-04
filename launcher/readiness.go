@@ -24,9 +24,11 @@ type subscription struct {
 	IncomingAppInfo chan *AppInfo
 	Closed          bool
 	QuitOnce        sync.Once
+
+	logger *zap.Logger
 }
 
-func newSubscription(chanSize int) (out *subscription) {
+func newSubscription(logger *zap.Logger, chanSize int) (out *subscription) {
 	return &subscription{
 		IncomingAppInfo: make(chan *AppInfo, chanSize),
 	}
@@ -37,12 +39,12 @@ func (s *subscription) Push(app *AppInfo) {
 		return
 	}
 
-	UserLog.Debug("pushing app readiness state to subscriber",
+	s.logger.Debug("pushing app readiness state to subscriber",
 		zap.Reflect("response", app),
 	)
 	if len(s.IncomingAppInfo) == cap(s.IncomingAppInfo) {
 		s.QuitOnce.Do(func() {
-			UserLog.Debug("reach max buffer size for readiness stream, closing channel")
+			s.logger.Debug("reach max buffer size for readiness stream, closing channel")
 			close(s.IncomingAppInfo)
 			s.Closed = true
 		})

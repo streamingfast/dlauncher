@@ -36,14 +36,17 @@ type Launcher struct {
 
 	shutdownDoOnce     sync.Once
 	firstShutdownAppID string
+
+	logger *zap.Logger
 }
 
-func NewLauncher(runtime *Runtime) *Launcher {
+func NewLauncher(logger *zap.Logger, runtime *Runtime) *Launcher {
 	l := &Launcher{
 		shutter:   shutter.New(),
 		apps:      make(map[string]App),
 		appStatus: make(map[string]AppStatus),
 		runtime:   runtime,
+		logger:    logger,
 	}
 	// TODO: this is weird should re-think this? Should the launcher be passed in every Factory App func instead?
 	// only the dashboard app that uses the launcher....
@@ -67,7 +70,7 @@ func (l *Launcher) Launch(appNames []string) error {
 		}
 
 		if appDef.InitFunc != nil {
-			UserLog.Debug("initialize application", zap.String("app", appID))
+			l.logger.Debug("initialize application", zap.String("app", appID))
 			err := appDef.InitFunc(l.runtime)
 			if err != nil {
 				return fmt.Errorf("unable to initialize app %q: %w", appID, err)
@@ -79,7 +82,7 @@ func (l *Launcher) Launch(appNames []string) error {
 		appDef := AppRegistry[appID]
 
 		l.StoreAndStreamAppStatus(appID, AppStatusCreated)
-		UserLog.Debug("creating application", zap.String("app", appID))
+		l.logger.Debug("creating application", zap.String("app", appID))
 		app, err := appDef.FactoryFunc(l.runtime)
 		if err != nil {
 			return fmt.Errorf("unable to create app %q: %w", appID, err)
@@ -106,7 +109,7 @@ func (l *Launcher) Launch(appNames []string) error {
 				l.shutdownIfRecoveringFromPanic(appID, recover())
 			})()
 
-			UserLog.Debug("launching app", zap.String("app", appID))
+			l.logger.Debug("launching app", zap.String("app", appID))
 			err := app.Run()
 			if err != nil {
 				l.shutdownDueToApp(appID, err)
@@ -170,14 +173,22 @@ func (l *Launcher) shutdownDueToApp(appID string, err error) {
 		l.firstShutdownAppID = appID
 
 		if err != nil {
-			UserLog.FatalAppError(appID, err)
+			l.FatalAppError(appID, err)
 		} else {
-			UserLog.Printf("app %s triggered clean shutdown", appID)
+			l.logger.Info(fmt.Sprintf("app %s triggered clean shutdown", appID))
 		}
 	})
 
 	l.StoreAndStreamAppStatus(appID, AppStatusStopped)
 	l.shutter.Shutdown(err)
+}
+
+func (l *Launcher) FatalAppError(app string, err error) {
+	msg := fmt.Sprintf("\n################################################################\n"+
+		"Fatal error in app %s:\n\n%s"+
+		"\n################################################################\n", app, err)
+
+	l.logger.Error(msg)
 }
 
 // shutdownIfRecoveringFromPanic is called with the result of `recover()` call in a `defer`
@@ -239,13 +250,13 @@ func (l *Launcher) updateReady() (allReady bool) {
 			if readyableApp.IsReady() {
 
 				if l.GetAppStatus(appID) != AppStatusRunning {
-					UserLog.Debug("app status switching to running", zap.String("app_id", appID))
+					l.logger.Debug("app status switching to running", zap.String("app_id", appID))
 					l.StoreAndStreamAppStatus(appID, AppStatusRunning)
 				}
 			} else {
 				allReady = false
 				if l.GetAppStatus(appID) != AppStatusWarning {
-					UserLog.Debug("app status switching to warning", zap.String("app_id", appID))
+					l.logger.Debug("app status switching to warning", zap.String("app_id", appID))
 					l.StoreAndStreamAppStatus(appID, AppStatusWarning)
 				}
 			}
@@ -255,33 +266,33 @@ func (l *Launcher) updateReady() (allReady bool) {
 }
 
 func (l *Launcher) WaitForTermination() {
-	UserLog.Printf("Waiting for all apps termination...")
+	l.logger.Info("waiting for all apps termination...")
 	now := time.Now()
 	for appID, app := range l.apps {
 	innerFor:
 		for {
 			select {
 			case <-app.Terminated():
-				UserLog.Debug("app terminated", zap.String("app_id", appID))
+				l.logger.Debug("app terminated", zap.String("app_id", appID))
 				break innerFor
 			case <-time.After(1500 * time.Millisecond):
-				UserLog.Printf("Still waiting for app %q ... %v", appID, time.Since(now).Round(100*time.Millisecond))
+				l.logger.Info(fmt.Sprintf("still waiting for app %q ... %v", appID, time.Since(now).Round(100*time.Millisecond)))
 			}
 		}
 	}
-	UserLog.Printf("All apps terminated gracefully")
+	l.logger.Info("all apps terminated gracefully")
 }
 
 func (l *Launcher) SubscribeAppStatus() *subscription {
 	chanSize := 500
-	sub := newSubscription(chanSize)
+	sub := newSubscription(l.logger, chanSize)
 
 	l.appStatusLock.Lock()
 	defer l.appStatusLock.Unlock()
 
 	l.appStatusSubscriptions = append(l.appStatusSubscriptions, sub)
 
-	UserLog.Debug("app status subscribed")
+	l.logger.Debug("app status subscribed")
 	return sub
 }
 

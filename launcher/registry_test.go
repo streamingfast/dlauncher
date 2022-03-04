@@ -39,10 +39,10 @@ func TestParseFromArgs(t *testing.T) {
 		},
 	}
 
-	RegisterApp(&AppDef{ID: "app1"})
-	RegisterApp(&AppDef{ID: "app2"})
-	RegisterApp(&AppDef{ID: "app3"})
-	RegisterApp(&AppDef{ID: "appnodefault"})
+	RegisterApp(zlog, &AppDef{ID: "app1"})
+	RegisterApp(zlog, &AppDef{ID: "app2"})
+	RegisterApp(zlog, &AppDef{ID: "app3"})
+	RegisterApp(zlog, &AppDef{ID: "appnodefault"})
 
 	for idx, test := range tests {
 		t.Run(fmt.Sprintf("%d", idx), func(t *testing.T) {

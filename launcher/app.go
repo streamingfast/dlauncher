@@ -1,36 +1,22 @@
 package launcher
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 )
 
 type AppDef struct {
 	ID            string
 	Title         string
 	Description   string
-	MetricsID     string
-	Logger        *LoggingDef
 	RegisterFlags func(cmd *cobra.Command) error
 	InitFunc      func(runtime *Runtime) error
 	FactoryFunc   func(runtime *Runtime) (App, error)
 }
 
-type LoggingDef struct {
-	Levels []zapcore.Level
-	Regex  string
-}
-
-func NewLoggingDef(regex string, levels []zapcore.Level) *LoggingDef {
-	if len(levels) == 0 {
-		levels = []zapcore.Level{zap.WarnLevel, zap.InfoLevel, zap.InfoLevel, zap.DebugLevel}
-	}
-
-	return &LoggingDef{
-		Levels: levels,
-		Regex:  regex,
-	}
+func (a *AppDef) String() string {
+	return fmt.Sprintf("%s (%s)", a.ID, a.Title)
 }
 
 type App interface {

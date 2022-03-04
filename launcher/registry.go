@@ -10,26 +10,27 @@ import (
 
 var AppRegistry = map[string]*AppDef{}
 
-func RegisterApp(appDef *AppDef) {
-	UserLog.Debug("registering app", zap.String("app_id", appDef.ID))
+func RegisterApp(logger *zap.Logger, appDef *AppDef) {
+	logger.Debug("registering app", zap.Stringer("app", appDef))
 	AppRegistry[appDef.ID] = appDef
 }
 
-var RegisterCommonFlags func(cmd *cobra.Command) error
+var RegisterCommonFlags func(logger *zap.Logger, cmd *cobra.Command) error
 
-func RegisterFlags(cmd *cobra.Command) error {
+func RegisterFlags(logger *zap.Logger, cmd *cobra.Command) error {
 	for _, appDef := range AppRegistry {
-		UserLog.Debug("trying to register flags", zap.String("app_id", appDef.ID))
+		logger.Debug("trying to register flags", zap.String("app_id", appDef.ID))
 		if appDef.RegisterFlags != nil {
-			UserLog.Debug("found non nil flags, registering", zap.String("app_id", appDef.ID))
+			logger.Debug("found non nil flags, registering", zap.String("app_id", appDef.ID))
 			err := appDef.RegisterFlags(cmd)
 			if err != nil {
 				return err
 			}
 		}
 	}
+
 	if RegisterCommonFlags != nil {
-		if err := RegisterCommonFlags(cmd); err != nil {
+		if err := RegisterCommonFlags(logger, cmd); err != nil {
 			return err
 		}
 	}

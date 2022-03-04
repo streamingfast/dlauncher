@@ -12,7 +12,7 @@ require (
 	github.com/streamingfast/dgrpc v0.0.0-20220301153539-536adf71b594
 	github.com/streamingfast/dmetrics v0.0.0-20210811180524-8494aeb34447
 	github.com/streamingfast/dtracing v0.0.0-20220301163030-15ce3f71dd1c
-	github.com/streamingfast/logging v0.0.0-20220222131651-12c3943aac2e
+	github.com/streamingfast/logging v0.0.0-20220304183711-ddba33d79e27
 	github.com/streamingfast/shutter v1.5.0
 	github.com/stretchr/testify v1.7.0
 	go.opencensus.io v0.23.0
