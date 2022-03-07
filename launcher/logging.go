@@ -15,6 +15,8 @@
 package launcher
 
 import (
+	"path/filepath"
+
 	"github.com/streamingfast/logging"
 	"go.uber.org/zap"
 )
@@ -45,6 +47,11 @@ func SetupLogger(rootLogger *zap.Logger, opts *LoggingOptions) {
 
 	if opts.LogFormat == "stackdriver" || opts.LogFormat == "json" {
 		options = append(options, logging.WithProductionLogger())
+	}
+
+	if opts.LogToFile {
+		options = append(options, logging.WithOutputToFile(filepath.Join(opts.WorkingDir, "app.log.json")))
+
 	}
 
 	logging.InstantiateLoggers(options...)
