@@ -1,6 +1,7 @@
 package launcher
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -12,7 +13,7 @@ type AppDef struct {
 	Description   string
 	RegisterFlags func(cmd *cobra.Command) error
 	InitFunc      func(runtime *Runtime) error
-	FactoryFunc   func(runtime *Runtime) (App, error)
+	FactoryFunc   func(ctx context.Context, runtime *Runtime) (App, error)
 }
 
 func (a *AppDef) String() string {

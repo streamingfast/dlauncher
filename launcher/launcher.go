@@ -15,6 +15,7 @@
 package launcher
 
 import (
+	"context"
 	"fmt"
 	"runtime/debug"
 	"sync"
@@ -48,6 +49,7 @@ func NewLauncher(logger *zap.Logger, runtime *Runtime) *Launcher {
 		runtime:   runtime,
 		logger:    logger,
 	}
+
 	// TODO: this is weird should re-think this? Should the launcher be passed in every Factory App func instead?
 	// only the dashboard app that uses the launcher....
 	l.runtime.Launcher = l
@@ -58,7 +60,7 @@ func (l *Launcher) Close() {
 	l.shutter.Shutdown(nil)
 }
 
-func (l *Launcher) Launch(appNames []string) error {
+func (l *Launcher) Launch(ctx context.Context, appNames []string) error {
 	if len(appNames) == 0 {
 		return fmt.Errorf("no apps specified")
 	}
@@ -83,7 +85,7 @@ func (l *Launcher) Launch(appNames []string) error {
 
 		l.StoreAndStreamAppStatus(appID, AppStatusCreated)
 		l.logger.Debug("creating application", zap.String("app", appID))
-		app, err := appDef.FactoryFunc(l.runtime)
+		app, err := appDef.FactoryFunc(ctx, l.runtime)
 		if err != nil {
 			return fmt.Errorf("unable to create app %q: %w", appID, err)
 		}
