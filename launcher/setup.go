@@ -20,14 +20,9 @@ import (
 	_ "net/http/pprof"
 	"syscall"
 
-	"github.com/streamingfast/dgrpc"
 	"github.com/streamingfast/dmetrics"
 	"go.uber.org/zap"
 )
-
-func init() {
-	dgrpc.Verbosity = 2
-}
 
 func SetupAnalyticsMetrics(logger *zap.Logger, metricsListenAddr string, pprofListenAddr string) {
 	if metricsListenAddr != "" {
