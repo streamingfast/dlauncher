@@ -2,8 +2,6 @@ module github.com/streamingfast/dlauncher
 
 go 1.18
 
-replace github.com/streamingfast/bstream => ../bstream
-
 require (
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/pflag v1.0.5
