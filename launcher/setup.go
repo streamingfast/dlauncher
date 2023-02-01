@@ -20,6 +20,9 @@ import (
 	_ "net/http/pprof"
 	"syscall"
 
+	"github.com/KimMachineGun/automemlimit/memlimit"
+	"go.uber.org/automaxprocs/maxprocs"
+
 	"github.com/streamingfast/dmetrics"
 	"go.uber.org/zap"
 )
@@ -45,6 +48,22 @@ func SetupAnalyticsMetrics(logger *zap.Logger, metricsListenAddr string, pprofLi
 
 const goodEnoughMaxOpenFilesLimit uint64 = 1000000
 const osxStockMaxOpenFilesLimit uint64 = 24576
+
+func SetAutoMemoryLimit(limit uint64, logger *zap.Logger) error {
+	if limit != 0 {
+		if limit > 100 {
+			return fmt.Errorf("cannot set common-auto-mem-limit-percent above 100")
+		}
+		logger.Info("setting GOMEMLIMIT relative to available memory", zap.Uint64("percent", limit))
+		memlimit.SetGoMemLimit(float64(limit) / 100)
+	}
+	return nil
+}
+
+func SetAutoMaxProcs(logger *zap.Logger) {
+	logger.Info("aligning GO max procs to available CPU threads according to cgroup limits")
+	maxprocs.Set()
+}
 
 func SetMaxOpenFilesLimit(logger *zap.Logger, goodEnoughMaxOpenFiles, osxStockMaxOpenFiles uint64) error {
 	maxOpenFilesLimit, err := getMaxOpenFilesLimit()
