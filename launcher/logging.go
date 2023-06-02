@@ -51,7 +51,6 @@ func SetupLogger(rootLogger *zap.Logger, opts *LoggingOptions) {
 
 	if opts.LogToFile {
 		options = append(options, logging.WithOutputToFile(filepath.Join(opts.WorkingDir, "app.log.json")))
-
 	}
 
 	logging.InstantiateLoggers(options...)
